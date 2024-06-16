@@ -1,0 +1,514 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<title>Login</title>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+<!--===============================================================================================-->	
+	<link rel="icon" type="image/png" href="images/icons/favicon.ico"/>
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="vendor/bootstrap/css/bootstrap.min.css">
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="fonts/font-awesome-4.7.0/css/font-awesome.min.css">
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="vendor/animate/animate.css">
+<!--===============================================================================================-->	
+	<link rel="stylesheet" type="text/css" href="vendor/css-hamburgers/hamburgers.min.css">
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="vendor/animsition/css/animsition.min.css">
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="vendor/select2/select2.min.css">
+<!--===============================================================================================-->	
+	<link rel="stylesheet" type="text/css" href="vendor/daterangepicker/daterangepicker.css">
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="css/util.css">
+	<link rel="stylesheet" type="text/css" href="css/main2.css">
+<!--===============================================================================================-->
+
+
+
+<link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" />
+
+<script src="https://cdn.jsdelivr.net/jquery/latest/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
+
+
+
+<script>
+
+$(document).ready(function() 
+{
+	$("#loading").hide();
+	$("#ajaxloading2").hide();
+	$("#ajaxloadingforgot").hide();
+	$("#textreload").hide();
+	document.getElementById("btnclose").disabled = false ;
+	document.getElementById("btnsave").disabled = false;
+});
+
+$(document).keypress(function(e) {
+    if(e.which == 13) {
+        loadlogin();
+        
+    }
+});
+
+function showpassword() {
+  var x = document.getElementById("pass");
+  if (x.type === "password") {
+    x.type = "text";
+  } else {
+    x.type = "password";
+  }
+}
+
+
+
+function loadreg()
+{
+  location.replace("registration.php");
+}
+
+
+function saveactivationcode()
+{
+	$("#ajaxloading2").show();
+	document.getElementById("btnclose").disabled = true ;
+	document.getElementById("btnsave").disabled = true;
+	var myusername = $("#username").val(); 
+	var mypassword = $("#pass").val(); 
+	$.post("activationcode_save.php",
+	{
+		theotp: $("#otpcode").val(), 
+		theusername: myusername,
+		usname: myusername, 
+		psname: mypassword
+	},function(result)
+	{
+		if(result==1)
+		{
+			$("#ajaxloading2").hide();
+			location.replace("home.php"); 
+		}
+		else if(result==2)
+		{
+			$("#ajaxloading2").hide();
+			document.getElementById("btnclose").disabled = false ;
+			document.getElementById("btnsave").disabled = false;
+		
+			document.getElementById('reloadpage').innerHTML = "<p class='text-danger' id='reloadpage' name='reloadpage'>Code is Not Valid</p>";
+		}
+		else 
+		{
+			$("#ajaxloading2").hide();
+			document.getElementById("btnclose").disabled = false ;
+			document.getElementById("btnsave").disabled = false;
+		$("#reloadpage").empty(); 
+		$("#reloadpage").append(result); 
+		}
+		
+	}); 
+
+
+
+}
+
+
+function sendforgot()
+{
+	$('#modelchangepassword').modal('show');
+	document.getElementById("forgotbtnclose").disabled = false ;
+					document.getElementById("forgotbtnsave").disabled = false ;
+					$("#ajaxloadingforgot").hide();
+}
+
+
+
+function sendemailforgot()
+{
+	$("#ajaxloadingforgot").show();
+	document.getElementById("forgotbtnclose").disabled = true ;
+					document.getElementById("forgotbtnsave").disabled = true ;
+var myemail = $("#forgotemail").val(); 
+
+
+
+$.post("emailforgotpassword.php",
+{
+	theemail: myemail
+},function(result)
+{
+	$("#ajaxloadingforgot").hide();
+	document.getElementById("forgotbtnclose").disabled = false ;
+					document.getElementById("forgotbtnsave").disabled = true ;
+	$("#resultforgot").empty(); 
+	$("#resultforgot").append(result); 
+});
+
+
+}
+
+function loadlogin()
+{
+	$("#textreload").hide();
+	$("#loading").show();
+	var myusername = $("#username").val(); 
+	var mypassword = $("#pass").val(); 
+	let x = 0; 
+	
+		$.post("credentials.php",
+		{
+			usname: myusername, 
+			psname: mypassword
+		},function(result)
+		{
+			if(result==1)
+			{
+				$("#loading").hide();
+				location.replace("home.php"); 
+			}
+			else if(result==2)
+			{
+				
+					var themail = $("#username").val(); 
+				//	window.open("http://www.icebergmaritimesolutions.com/emailvirtue/emailtest.php?email=" + themail,"windowName", "width=100,height=100,scrollbars=yes");
+
+				$.post("emailsending2.php",
+				{
+					myemail: themail
+				},function(result)
+				{
+					$("#loading").hide();
+					$("#reloadpage").empty(); 
+					document.getElementById("btnclose").disabled = false ;
+					document.getElementById("btnsave").disabled = false;
+					$('#modelverification').modal('show');
+				});
+				
+			
+			}
+			else 
+			{
+				$("#textreload").show();
+				$("#loading").hide();
+				$("#textreload").empty(); 
+				$("#textreload").append(result); 
+			}
+
+		}); 
+
+}
+
+
+
+
+
+</script>
+
+
+
+<style> 
+
+/* Absolute Center Spinner */
+.loading {
+  position: fixed;
+  z-index: 999;
+  height: 2em;
+  width: 2em;
+  overflow: show;
+  margin: auto;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+}
+
+/* Transparent Overlay */
+.loading:before {
+  content: '';
+  display: block;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+    background: radial-gradient(rgba(20, 20, 20,.8), rgba(0, 0, 0, .8));
+
+  background: -webkit-radial-gradient(rgba(20, 20, 20,.8), rgba(0, 0, 0,.8));
+}
+
+/* :not(:required) hides these rules from IE9 and below */
+.loading:not(:required) {
+  /* hide "loading..." text */
+  font: 0/0 a;
+  color: transparent;
+  text-shadow: none;
+  background-color: transparent;
+  border: 0;
+}
+
+.loading:not(:required):after {
+  content: '';
+  display: block;
+  font-size: 10px;
+  width: 1em;
+  height: 1em;
+  margin-top: -0.5em;
+  -webkit-animation: spinner 150ms infinite linear;
+  -moz-animation: spinner 150ms infinite linear;
+  -ms-animation: spinner 150ms infinite linear;
+  -o-animation: spinner 150ms infinite linear;
+  animation: spinner 150ms infinite linear;
+  border-radius: 0.5em;
+  -webkit-box-shadow: rgba(255,255,255, 0.75) 1.5em 0 0 0, rgba(255,255,255, 0.75) 1.1em 1.1em 0 0, rgba(255,255,255, 0.75) 0 1.5em 0 0, rgba(255,255,255, 0.75) -1.1em 1.1em 0 0, rgba(255,255,255, 0.75) -1.5em 0 0 0, rgba(255,255,255, 0.75) -1.1em -1.1em 0 0, rgba(255,255,255, 0.75) 0 -1.5em 0 0, rgba(255,255,255, 0.75) 1.1em -1.1em 0 0;
+box-shadow: rgba(255,255,255, 0.75) 1.5em 0 0 0, rgba(255,255,255, 0.75) 1.1em 1.1em 0 0, rgba(255,255,255, 0.75) 0 1.5em 0 0, rgba(255,255,255, 0.75) -1.1em 1.1em 0 0, rgba(255,255,255, 0.75) -1.5em 0 0 0, rgba(255,255,255, 0.75) -1.1em -1.1em 0 0, rgba(255,255,255, 0.75) 0 -1.5em 0 0, rgba(255,255,255, 0.75) 1.1em -1.1em 0 0;
+}
+
+/* Animation */
+
+@-webkit-keyframes spinner {
+  0% {
+    -webkit-transform: rotate(0deg);
+    -moz-transform: rotate(0deg);
+    -ms-transform: rotate(0deg);
+    -o-transform: rotate(0deg);
+    transform: rotate(0deg);
+  }
+  100% {
+    -webkit-transform: rotate(360deg);
+    -moz-transform: rotate(360deg);
+    -ms-transform: rotate(360deg);
+    -o-transform: rotate(360deg);
+    transform: rotate(360deg);
+  }
+}
+@-moz-keyframes spinner {
+  0% {
+    -webkit-transform: rotate(0deg);
+    -moz-transform: rotate(0deg);
+    -ms-transform: rotate(0deg);
+    -o-transform: rotate(0deg);
+    transform: rotate(0deg);
+  }
+  100% {
+    -webkit-transform: rotate(360deg);
+    -moz-transform: rotate(360deg);
+    -ms-transform: rotate(360deg);
+    -o-transform: rotate(360deg);
+    transform: rotate(360deg);
+  }
+}
+@-o-keyframes spinner {
+  0% {
+    -webkit-transform: rotate(0deg);
+    -moz-transform: rotate(0deg);
+    -ms-transform: rotate(0deg);
+    -o-transform: rotate(0deg);
+    transform: rotate(0deg);
+  }
+  100% {
+    -webkit-transform: rotate(360deg);
+    -moz-transform: rotate(360deg);
+    -ms-transform: rotate(360deg);
+    -o-transform: rotate(360deg);
+    transform: rotate(360deg);
+  }
+}
+@keyframes spinner {
+  0% {
+    -webkit-transform: rotate(0deg);
+    -moz-transform: rotate(0deg);
+    -ms-transform: rotate(0deg);
+    -o-transform: rotate(0deg);
+    transform: rotate(0deg);
+  }
+  100% {
+    -webkit-transform: rotate(360deg);
+    -moz-transform: rotate(360deg);
+    -ms-transform: rotate(360deg);
+    -o-transform: rotate(360deg);
+    transform: rotate(360deg);
+  }
+}
+
+
+
+
+</style>
+
+
+
+</head>
+
+
+
+<body>
+	<div class="loading" id="loading" name="loading">Loading&#8230;</div>
+
+	   <!-- Modal -->
+	   <div class="modal fade" id="modelchangepassword" tabindex="-1" role="dialog" aria-labelledby="modelTitleId" aria-hidden="true">
+		<div class="modal-dialog" role="document">
+		  <div class="modal-content">
+			  <div class="modal-header">
+				  <h5 class="modal-title">Change / Forgot Password</h5>
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+					  <span aria-hidden="true">&times;</span>
+					</button>
+				</div>
+			  <div class="modal-body">
+				<div class="container-fluid">
+
+				<!-- 
+				<div class="form-group">
+					<img src="images/otp.png" class="img-thumbnail" style="max-width: 100%;" alt="Responsive image">
+				</div>
+				-->
+
+				<div class="form-group">
+						<label for="forgotemail" class="form-label">Enter your email</label>
+						<input type="text" style="background-color: yellow;" name="forgotemail" id="forgotemail" class="form-control">
+				</div>
+
+				<div class="form-group">
+					<p class="text-danger" id="resultforgot" name="resultforgot"> </p>
+				</div>
+				
+			 
+							  </div>
+			</div>
+			<div class="modal-footer">
+			  <button id="forgotbtnclose" type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+			  <button id="forgotbtnsave" type="button" class="btn btn-primary" onclick="sendemailforgot()">Send</button> <img src="images/ajax-loader.gif" id="ajaxloadingforgot"/>
+			</div>
+		  </div>
+		</div>
+	  </div>
+
+	  <!--END OF MODAL -->
+
+
+
+
+	   <!-- Modal -->
+	   <div class="modal fade" id="modelverification" tabindex="-1" role="dialog" aria-labelledby="modelTitleId" aria-hidden="true">
+		<div class="modal-dialog" role="document">
+		  <div class="modal-content">
+			  <div class="modal-header">
+				  <h5 class="modal-title">Email Verification</h5>
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+					  <span aria-hidden="true">&times;</span>
+					</button>
+				</div>
+			  <div class="modal-body">
+				<div class="container-fluid">
+				<div class="form-group">
+					<img src="images/otp.png" class="img-thumbnail" style="max-width: 100%;" alt="Responsive image">
+				</div>
+
+				<div class="form-group">
+						<label for="otpcode" class="form-label">Enter your One Time Password sended tru your email</label>
+						<input type="otpcode" style="background-color: yellow;" name="otpcode" id="otpcode" class="form-control">
+				</div>
+
+				<div class="form-group">
+					<p class="text-danger" id="reloadpage" name="reloadpage"> </p>
+			</div>
+				
+			 
+							  </div>
+			</div>
+			<div class="modal-footer">
+			  <button id="btnclose" type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+			  <button id="btnsave" type="button" class="btn btn-primary" onclick="saveactivationcode()">Save</button> <img src="images/ajax-loader.gif" id="ajaxloading2"/>
+			</div>
+		  </div>
+		</div>
+	  </div>
+
+	  <!--END OF MODAL -->
+
+
+
+	
+	<div class="limiter">
+		<div class="container-login100">
+			<div class="wrap-login100">
+				<div class="login100-form validate-form p-l-55 p-r-55 p-t-178">
+					<span class="login100-form-title" style="background-color: #061f5f !important; ">
+						Sign In
+					</span>
+
+					<div class="wrap-input100 validate-input m-b-16" data-validate="Please enter username">
+						<input class="input100" type="text" id="username" name="username" placeholder="Username">
+						<span class="focus-input100"></span>
+					</div>
+
+					<div class="wrap-input100 validate-input" data-validate = "Please enter password">
+						<input class="input100" type="password" id="pass" name="pass" placeholder="Password">
+						<span class="focus-input100"></span>
+					</div>
+					<div class="wrap-input100 validate-input" data-validate = "Please enter password">
+						<p id="textreload" name="textreload"  class="text-danger"></p>
+					</div>
+
+					<!-- An element to toggle between password visibility -->
+					<input type="checkbox" onclick="showpassword()" style="margin-top: 30px; margin-left: 10px;"> Show Password </input> 
+
+
+					<div class="text-right p-t-13 p-b-23">
+						<span class="txt1">
+							Forgot
+						</span>
+
+						<a href='javascript:;' class="txt2" onclick="sendforgot()">
+							Username / Password?
+						</a>
+					</div>
+
+					<div class="container-login100-form-btn">
+						<button class="login100-form-btn" onclick="loadlogin()">
+							Sign in
+						</button>
+					</div>
+
+					<div class="container-login100-form-btn" style="margin-top:10px;">
+						<button class="login100-form-btn" onclick="loadreg()">
+							Register
+						</button>
+					</div>
+
+					<div class="flex-col-c p-t-170 p-b-40">
+						<span class="txt1 p-b-9">
+							Don’t have an account?
+						</span>
+
+						<a href="#" class="txt3">
+							Sign up now
+						</a>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	
+	
+<!--===============================================================================================-->
+	<script src="vendor/jquery/jquery-3.2.1.min.js"></script>
+<!--===============================================================================================-->
+	<script src="vendor/animsition/js/animsition.min.js"></script>
+<!--===============================================================================================-->
+	<script src="vendor/bootstrap/js/popper.js"></script>
+	<script src="vendor/bootstrap/js/bootstrap.min.js"></script>
+<!--===============================================================================================-->
+	<script src="vendor/select2/select2.min.js"></script>
+<!--===============================================================================================-->
+	<script src="vendor/daterangepicker/moment.min.js"></script>
+	<script src="vendor/daterangepicker/daterangepicker.js"></script>
+<!--===============================================================================================-->
+	<script src="vendor/countdowntime/countdowntime.js"></script>
+<!--===============================================================================================-->
+	<script src="js/mainjava.js"></script>
+
+</body>
+</html>

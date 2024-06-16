@@ -239,7 +239,7 @@ function loadmydocuments()
                 @$mydocname = loaddocname($rows['docid']); 
                 @$authenticity = $rows['authenticity']; 
                 @$docfile = $rows['filename']; 
-                @$docfilelink = "uploads/". $myusername . "/" . $docfile; 
+                @$docfilelink = "../userdocuments/uploads/". $myusername . "/" . $docfile; 
                 @$docshow = '"'. $docfilelink . '"'; 
                 @$delid = '"'. $rows['ID']  .'"'; 
                 @$doctheid = '"'. $rows['docid']  .'"'; 
@@ -344,7 +344,7 @@ function loadmydocumentsbyhiring($hiringid)
                             @$mydocname = loaddocname($rows['docid']); 
                             @$authenticity = $rows['authenticity']; 
                             @$docfile = $rows['filename']; 
-                            @$docfilelink = "uploads/". $myusername . "/" . $docfile; 
+                            @$docfilelink = "../userdocuments/uploads/". $myusername . "/" . $docfile; 
                             @$docshow = '"'. $docfilelink . '"'; 
                             @$delid = '"'. $rows['ID']  .'"'; 
                             @$doctheid = '"'. $rows['docid']  .'"'; 
@@ -403,7 +403,7 @@ function loadmydocumentsbyhiring($hiringid)
                         @$mydocname = loaddocname($docid); 
                         @$authenticity = ""; 
                         @$docfile = ""; 
-                        // @$docfilelink = "uploads/". $myusername . "/" . $docfile; 
+                        // @$docfilelink = "../userdocuments/uploads/". $myusername . "/" . $docfile; 
                         // @$docshow = '"'. $docfilelink . '"'; 
                         // @$delid = '"'. $rows['ID']  .'"'; 
                          @$doctheid = '"'. $docid  .'"'; 

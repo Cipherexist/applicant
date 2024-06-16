@@ -28,7 +28,7 @@ if(!empty($_FILES["file"]))
     require "loadtables.php"; 
 
     $filename = $_COOKIE['usname']. "-" . loadregistrationtime2();
-    $target_directory = "uploads/". $_COOKIE['usname']. "/"; 
+    $target_directory = "../userdocuments/uploads/". $_COOKIE['usname']. "/"; 
     $target_file = $target_directory.basename($_FILES["file"]["name"]);
     $filetype = strtolower(pathinfo($target_file, PATHINFO_EXTENSION)); 
     $newfilename = $target_directory.$filename. "." . $filetype; 

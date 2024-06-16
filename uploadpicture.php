@@ -6,7 +6,7 @@ if(!empty($_FILES["file"]))
 {
     include 'modules.php'; 
     $filename = $_COOKIE['usname']. "-" . loadregistrationtime();
-    $target_directory = "profilepic/"; 
+    $target_directory = "../userdocuments/profilepic/"; 
     $target_file = $target_directory.basename($_FILES["file"]["name"]);
     $filetype = strtolower(pathinfo($target_file, PATHINFO_EXTENSION)); 
     $newfilename = $target_directory.$filename. "." . $filetype; 
@@ -20,7 +20,7 @@ if(!empty($_FILES["file"]))
         @$usernamecall = $_COOKIE['usname'];  
         @$tcode = $_COOKIE['traineecode']; 
 
-        $mysql = "UPDATE `applicantinfo` SET `pictureloc` = '$filenamelocation' WHERE username Like '$usernamecall'"; 
+        $mysql = "UPDATE `applicantinfo` SET `pictureloc` = '$filenameonly' WHERE username Like '$usernamecall'"; 
         $dba = mysqli_query($sqlcon,$mysql); 
 
         if(!mysqli_error($sqlcon))

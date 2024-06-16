@@ -19,7 +19,7 @@ function loadthepic($username)
         {
             while ($rows = mysqli_fetch_assoc($dbt))
             {
-              $pictureresult = $rows['pictureloc']; 
+                  $pictureresult = "../userdocuments/profilepic/". $rows['pictureloc']; 
                 return $pictureresult; 
             }
 
@@ -43,7 +43,7 @@ function loadthepic($username)
     {
     $finalpic = $picturelocation; 
     }
-
+   // echo $picturelocation;
     echo "<div id='reloadpic' name='reloadpic' class='img logo rounded-circle mb-5' style='background-image: url($finalpic);'> <button type='button' class='btn btn-primary btn-sm btnupload fa fa-upload' data-toggle='modal' data-target='#pictureuploadmodal'></button></div> "; 
     echo "<div id='reloadprogress'>"; 
     echo showprogress(); 
