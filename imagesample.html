@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <style>
+    .profile-image {
+      width: 150px;
+      height: 150px;
+      border-radius: 50%;
+      object-fit: cover;
+    }
+    .upload-button {
+      margin-top: 10px;
+    }
+  </style>
+</head>
+<body>
+  <div>
+    <img src="default-profile-picture.jpg" alt="Profile Picture" class="profile-image" id="profile-image">
+    <input type="file" id="image-upload" style="display: none;">
+    <button class="upload-button" onclick="document.getElementById('image-upload').click()">Upload Image</button>
+  </div>
+</body>
+</html>
