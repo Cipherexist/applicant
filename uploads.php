@@ -105,6 +105,7 @@ function uploadshow()
             $("#loading").hide();
             $("#ajaxloadingforpic").hide();
             $("#showhiring").hide();
+            $("#showaddcmb").hide();
         });
 
 
@@ -787,6 +788,19 @@ if (!file_exists('../userdocuments/uploads/' . $username)) {
                 </div>
        </div>
 
+       <div id="showaddcmb">
+        <div class='form-group' style='margin-left: 10px;'>
+            <label for='adddoc_cmb'>Select Document</label>
+            <select class='form-control' id='adddoc_cmb'> 
+            
+                <span id="doccmbresult"></span>
+
+        
+            </select>
+          </div>
+       
+       </div>
+
      
 
 
@@ -839,7 +853,18 @@ if (!file_exists('../userdocuments/uploads/' . $username)) {
     {
       $("#showhiring").show();
     }
-
+    else 
+    {
+      $.post("uploads_cmb.php",
+      {
+        doctype: myvalue
+      },function(result)
+      { 
+        $("#showaddcmb").show();
+        document.getElementById("adddoc_cmb").innerHTML = result;
+       // console.log(result)
+      })
+    }
 
   })
 
