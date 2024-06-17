@@ -85,7 +85,7 @@ function loadthepic($username)
 
 
     echo "<li class='$nav3'>
-          <a href='uploads.php'>Uploads</a>
+          <a href='uploads.php?content=all'>Uploads</a>
           </li>"; 
 
         echo "<li class='$nav4'>

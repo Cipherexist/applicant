@@ -22,7 +22,43 @@ function loadmyposition()
 
 }
 
+function loaddoctype($id)
+{
+    @$myid = $id; 
+    $result = "none"; 
+    $doctype = loadtextreturn("requirement","doctype","Where `ID` Like '$myid'"); 
+    if($doctype!="")
+    {
+        $result = $doctype;  
+    }
 
+    return $result;
+}
+
+
+
+function loadexpirationcheck($mydate)
+{
+    $getdate = loadregistrationformat($mydate);
+    $gettoday = loadregistrationdatetoday(); 
+    //explode the date to get month, day and year
+
+    $total  = $gettoday - $getdate; 
+
+
+
+    if($total<0)
+    {
+        return false;
+    }
+    else 
+    {
+        return true; 
+    }
+
+
+
+}
 
 
 function loadcompletename($username)

@@ -601,28 +601,36 @@ box-shadow: rgba(255,255,255, 0.75) 1.5em 0 0 0, rgba(255,255,255, 0.75) 1.1em 1
 <div class="row">
           <ul class="nav nav-tabs">
                 <li class="nav-item">
-                        <a class="nav-link" href="home.php">Personal Details</a>
-                </li>
-                <li class="nav-item">
-                  <a class="nav-link" href="education.php">Educational attainment</a>
-                </li>
-                <li class="nav-item">
-                  <a class="nav-link" href="family.php">Family details</a>
-                </li>
-                <li class="nav-item">
-                  <a class="nav-link" href="national_documents.php">National Document</a>
-                </li> 
-                <li class="nav-item" >
-                  <a class="nav-link" href="marina_documents.php">Marina Document</a>
-                </li> 
-                
-                <li class="nav-item">
-                  <a class="nav-link active" href="seaservice.php">Sea Service</a>
+                  <a class="nav-link" href="home.php">Personal Details</a>
                 </li>
                
+                <li class="nav-item">
+                  <a class="nav-link " aria-current="page" href="education.php">Educational attainment</a>
+                </li>
+
+                <li class="nav-item">
+                  <a class="nav-link " href="family.php">Family details</a>
+                </li>  
+
+                            
+                <li class="nav-item">
+                  <a class="nav-link <?php if(isset($_GET['content'])&&$_GET['content']=='national'){echo 'active';}?>" href="my_documents.php?content=national">National Document</a>
+                </li> 
+
+                <li class="nav-item">
+                  <a class="nav-link <?php if(isset($_GET['content'])&&$_GET['content']=='marina'){echo 'active';}?>" href="my_documents.php?content=marina">Marina Document</a>
+                </li> 
+
+                <li class="nav-item">
+                  <a class="nav-link <?php if(isset($_GET['content'])&&$_GET['content']=='all'){echo 'active';}?>" href="my_documents.php?content=all">All Documents</a>
+                </li> 
+
+                <li class="nav-item">
+                  <a class="nav-link active" href="seaservice.php">Sea Service</a>
+                </li>  
+            
           </ul>
 </div>
-
 <!-- START --> 
 
 <div style="padding: 10px; height:70%;">

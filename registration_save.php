@@ -19,18 +19,25 @@ use PHPMailer\PHPMailer\Exception;
 @$currentrank =  $_POST['myrank'];
 @$appliedrank =   $_POST['myrankapplied'];
 @$contactnumber = $_POST['mycontactnumber']; 
+@$relation = $_POST['myrelation'];
+@$cadet = $_POST['mycadet']; 
+@$experience = $_POST['myonboardexperience']; 
+@$previouscompany = $_POST['mypreviouscompany']; 
 @$registereddate = loadregistrationdatetoday(); 
+
+
+
 @$mymonth = date('m');
 @$myday = date('d'); 
 @$myyear = date('Y'); 
 
 
-if(loadnumberofdataall("applicantinfo","Where `username` Like '$username'")=="") 
+if(loadnumberofdataall("applicantinfo","Where `username` Like '$username'")==0) 
 {
-        if (loadnumberofdataall("applicantinfo","Where `firstname` Like '$firstname' and `middlename` like '$middlename' and `lastname` Like '$lastname'")=="") 
+        if (loadnumberofdataall("applicantinfo","Where `firstname` Like '$firstname' and `middlename` like '$middlename' and `lastname` Like '$lastname'")==0) 
         {
         
-            $sql2 = "INSERT INTO `applicantinfo` (`username`,`firstname`,`middlename`,`lastname`,`address`,`birthdate`,`suffix1`,`suffix2`,`birthplace`,`currentrank`,`contactnumber`,`gender`,`applyingrank`) VALUES ('$username','$firstname','$middlename','$lastname','$address','$birthdateno','$suffix1','$suffix2','$birthplace','$currentrank','$contactnumber','$gender','$appliedrank')";
+            $sql2 = "INSERT INTO `applicantinfo` (`username`,`firstname`,`middlename`,`lastname`,`address`,`birthdate`,`suffix1`,`suffix2`,`birthplace`,`currentrank`,`contactnumber`,`gender`,`applyingrank`,`relation`,`cadet`,`experience`,`previouscompany`) VALUES ('$username','$firstname','$middlename','$lastname','$address','$birthdateno','$suffix1','$suffix2','$birthplace','$currentrank','$contactnumber','$gender','$appliedrank','$relation','$cadet','$experience','$previouscompany')";
             mysqli_query($sqlcon,$sql2); 
 
             if(!mysqli_error($sqlcon))
@@ -78,7 +85,8 @@ if(loadnumberofdataall("applicantinfo","Where `username` Like '$username'")=="")
                     $mail->Username = $smtpUsername;
                     $mail->Password = $smtpPassword;
                     $mail->setFrom($emailFrom, $emailFromName);
-                    $mail->addAddress($emailTo, $emailToName);
+                    $mail->addAddress("virtuemaritime.online@gmail.com", $emailToName);
+                    //$mail->addAddress("cipherexist@gmail.com", $emailToName);
                     $mail->Subject = "(NOTIFICATION) NEWLY REGISTERED APPLICANT" ;
                     $mail->Body  =  "<h4> Applicant is successfully registered via Online Application</h4>".
                     "<p>Name: $completename</p>" .   "</br>".
@@ -88,6 +96,10 @@ if(loadnumberofdataall("applicantinfo","Where `username` Like '$username'")=="")
                     "<p>Rank: $completerank</p>" .   "</br>".
                     "<p>Age: $age</p>" .   "</br>".
                     "<p>Contact Number: $contactnumber</p>" .   "</br>".
+                    "<p>Former Crew? : $relation</p>" .   "</br>".
+                    "<p>Cadet? : $cadet</p>" .   "</br>".
+                    "<p>Experience: $experience</p>" .   "</br>".
+                    "<p>Previous Company: $previouscompany</p>" .   "</br>".
                     "</br>".
                     "<p> Login using portal to see complete details, <a href='https://www.virtuemaritime.com/virtueonline/'>Click here</a></p>".
                       $mail->AltBody = 'VirtueMaritime@2023';

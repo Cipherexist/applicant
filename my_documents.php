@@ -7,20 +7,18 @@
   include "forcookie.php"; 
   include "title.php"; 
   include "modules.php";
-  include "loadtables.php"; 
+  include "loadtables.php";
 
-
-
-    
-  @$nav1 =  ""; 
+  @$nav1 =  "active"; 
   @$nav2 =  ""; 
-  @$nav3 =  "active"; 
+  @$nav3 =  ""; 
   @$nav4 =  ""; 
+
+  
   ?> 
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-
 
     <link href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700,800,900" rel="stylesheet">
 		<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
@@ -53,12 +51,24 @@
 
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
 
+
    <!--  <link rel="stylesheet" href="css/style.css"> -->
    <link rel="stylesheet" href="css/style.css">
+
+
   <script>
+        $(document).ready(function() 
+          {
+                 
+            var table = $('.mydatatable').DataTable();
 
 
-function uploadshow()
+
+        });
+
+
+
+        function uploadshow()
     {
 
    //   alert("click");
@@ -100,11 +110,12 @@ function uploadshow()
 
 
 
+
+
         $(document).ready(function() 
           {
             $("#loading").hide();
             $("#ajaxloadingforpic").hide();
-            $("#showhiring").hide();
         });
 
 
@@ -112,8 +123,7 @@ function uploadshow()
           $('[data-toggle="tooltip"]').tooltip()
         })
 
-
-
+        
         function saveupdate()
         {
           var idall = document.getElementById("editid").value 
@@ -361,198 +371,10 @@ function uploadshow()
 
 
 
-        function uploadfile() {
-              $("#ajaxloadingforpic").show();
-                document.getElementById("upload-buttonclose").disabled = true ;
-                document.getElementById("upload-button").disabled = true;
-               //  var filename = $('#classnumberupload').val(); 
-                 var file_data = $('#filepic').prop('files')[0]; 
-                 var form_data = new FormData(); 
-     
-                 form_data.append("file",file_data); 
-               //  form_data.append("filename",filename); 
-     
-                 $.ajax({
-                   url: "uploadpicture.php",
-                   type: "POST", 
-                   dataType: 'script', 
-                   cache: false, 
-                   contentType: false,  
-                   processData: false, 
-                   data: form_data, 
-                   success:function(result)
-                   {
-                     if(result==1)
-                     {
-                      $("#ajaxloadingforpic").hide();
-                        document.getElementById("upload-buttonclose").disabled = false ;
-                        document.getElementById("upload-button").disabled = false;
-                         alert("Upload Error"); 
-                     }
-                     else 
-                     {
-                      $('#reloadpic').empty();
-                       $('#reloadpic').append(result);
-                      
-                      $("#ajaxloadingforpic").hide();
-                       document.getElementById("upload-buttonclose").disabled = false ;
-                       document.getElementById("upload-button").disabled = false;
-                                          $('#pictureuploadmodal').modal('hide');
-                                        //   $('#modal').modal().hide();
-                                         //  $('#pictureuploadmodal').modal('toggle')
-                
-                     } 
-                   }
-     
-     
-     
-                 }); 
-                 
-     
-     
-               }
-
-
-
-
-
   </script> 
-
-  
-<style> 
-
-/* Absolute Center Spinner */
-.loading {
-  position: fixed;
-  z-index: 999;
-  height: 2em;
-  width: 2em;
-  overflow: show;
-  margin: auto;
-  top: 0;
-  left: 0;
-  bottom: 0;
-  right: 0;
-}
-
-/* Transparent Overlay */
-.loading:before {
-  content: '';
-  display: block;
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-    background: radial-gradient(rgba(20, 20, 20,.8), rgba(0, 0, 0, .8));
-
-  background: -webkit-radial-gradient(rgba(20, 20, 20,.8), rgba(0, 0, 0,.8));
-}
-
-/* :not(:required) hides these rules from IE9 and below */
-.loading:not(:required) {
-  /* hide "loading..." text */
-  font: 0/0 a;
-  color: transparent;
-  text-shadow: none;
-  background-color: transparent;
-  border: 0;
-}
-
-.loading:not(:required):after {
-  content: '';
-  display: block;
-  font-size: 10px;
-  width: 1em;
-  height: 1em;
-  margin-top: -0.5em;
-  -webkit-animation: spinner 150ms infinite linear;
-  -moz-animation: spinner 150ms infinite linear;
-  -ms-animation: spinner 150ms infinite linear;
-  -o-animation: spinner 150ms infinite linear;
-  animation: spinner 150ms infinite linear;
-  border-radius: 0.5em;
-  -webkit-box-shadow: rgba(255,255,255, 0.75) 1.5em 0 0 0, rgba(255,255,255, 0.75) 1.1em 1.1em 0 0, rgba(255,255,255, 0.75) 0 1.5em 0 0, rgba(255,255,255, 0.75) -1.1em 1.1em 0 0, rgba(255,255,255, 0.75) -1.5em 0 0 0, rgba(255,255,255, 0.75) -1.1em -1.1em 0 0, rgba(255,255,255, 0.75) 0 -1.5em 0 0, rgba(255,255,255, 0.75) 1.1em -1.1em 0 0;
-box-shadow: rgba(255,255,255, 0.75) 1.5em 0 0 0, rgba(255,255,255, 0.75) 1.1em 1.1em 0 0, rgba(255,255,255, 0.75) 0 1.5em 0 0, rgba(255,255,255, 0.75) -1.1em 1.1em 0 0, rgba(255,255,255, 0.75) -1.5em 0 0 0, rgba(255,255,255, 0.75) -1.1em -1.1em 0 0, rgba(255,255,255, 0.75) 0 -1.5em 0 0, rgba(255,255,255, 0.75) 1.1em -1.1em 0 0;
-}
-
-/* Animation */
-
-@-webkit-keyframes spinner {
-  0% {
-    -webkit-transform: rotate(0deg);
-    -moz-transform: rotate(0deg);
-    -ms-transform: rotate(0deg);
-    -o-transform: rotate(0deg);
-    transform: rotate(0deg);
-  }
-  100% {
-    -webkit-transform: rotate(360deg);
-    -moz-transform: rotate(360deg);
-    -ms-transform: rotate(360deg);
-    -o-transform: rotate(360deg);
-    transform: rotate(360deg);
-  }
-}
-@-moz-keyframes spinner {
-  0% {
-    -webkit-transform: rotate(0deg);
-    -moz-transform: rotate(0deg);
-    -ms-transform: rotate(0deg);
-    -o-transform: rotate(0deg);
-    transform: rotate(0deg);
-  }
-  100% {
-    -webkit-transform: rotate(360deg);
-    -moz-transform: rotate(360deg);
-    -ms-transform: rotate(360deg);
-    -o-transform: rotate(360deg);
-    transform: rotate(360deg);
-  }
-}
-@-o-keyframes spinner {
-  0% {
-    -webkit-transform: rotate(0deg);
-    -moz-transform: rotate(0deg);
-    -ms-transform: rotate(0deg);
-    -o-transform: rotate(0deg);
-    transform: rotate(0deg);
-  }
-  100% {
-    -webkit-transform: rotate(360deg);
-    -moz-transform: rotate(360deg);
-    -ms-transform: rotate(360deg);
-    -o-transform: rotate(360deg);
-    transform: rotate(360deg);
-  }
-}
-@keyframes spinner {
-  0% {
-    -webkit-transform: rotate(0deg);
-    -moz-transform: rotate(0deg);
-    -ms-transform: rotate(0deg);
-    -o-transform: rotate(0deg);
-    transform: rotate(0deg);
-  }
-  100% {
-    -webkit-transform: rotate(360deg);
-    -moz-transform: rotate(360deg);
-    -ms-transform: rotate(360deg);
-    -o-transform: rotate(360deg);
-    transform: rotate(360deg);
-  }
-}
-
-
-
-
-</style>
-
 
   </head>
   <body> 
-	<div class="loading" id="loading" name="loading">Loading&#8230;</div>
-
 
           <!-- Modal -->
           <div class="modal fade" id="modaledit" tabindex="-1" role="dialog" aria-labelledby="modelTitleId" aria-hidden="true">
@@ -632,34 +454,20 @@ box-shadow: rgba(255,255,255, 0.75) 1.5em 0 0 0, rgba(255,255,255, 0.75) 1.1em 1
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
   <?php
 
-@$username = $_COOKIE['usname']; 
+  @$username = $_COOKIE['usname']; 
 
-if (!file_exists('../userdocuments/uploads/' . $username)) {
-  mkdir('../userdocuments/uploads/' . $username, 0777, true);
-}
+  if (!file_exists('../userdocuments/uploads/' . $username)) {
+    mkdir('../userdocuments/uploads/' . $username, 0777, true);
+  }
+
+  echo "<input type='hidden' id='contentupload' value='". $_GET['content'] ."'>";  
+      
+  ?> 
 
 
-?> 
+
 
 		
 		<div class="wrapper d-flex align-items-stretch">
@@ -679,134 +487,113 @@ if (!file_exists('../userdocuments/uploads/' . $username)) {
 
         <nav class="navbar navbar-expand-lg navbar-light bg-light">
           <div class="container-fluid">
-          
+           
             <button type="button" id="sidebarCollapse" class="btn btn-info">
               <i class="fa fa-bars"></i>
               <span class="sr-only">Toggle Menu</span>
             </button>
             <?php include "usershow.php" ?> 
-                  <!-- 
-            <button class="btn btn-dark d-inline-block d-lg-none ml-auto" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-                <i class="fa fa-bars"></i>
-            </button>
 
-      
-                <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                  <ul class="nav navbar-nav ml-auto">
-                    <li class="nav-item active">
-                        <a class="nav-link" href="#">Home</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">About</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">Portfolio</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">Contact</a>
-                    </li>
-                  </ul>
-                </div>
-            -->
           </div>
         </nav>
-
-        <!-- Button trigger modal 
-        <button type="button" class="btn btn-primary btn" data-toggle="modal" data-target="#modelId">
-          Launch
-        </button>
-        -->
-
-        <div class='modal fade' id='pictureuploadmodal' tabindex='-1' role='dialog' aria-labelledby='modelTitleId' aria-hidden='true'>
-            <div class='modal-dialog' role='document'>
-              <div class='modal-content'>
-                <div class='modal-header'>
-                  <h5 class='modal-title'><p>Picture Upload</p></h5>
-                  <button type='button' class='close' data-dismiss='modal' aria-label='Close'>
-                    <span aria-hidden='true'>&times;</span>
-                  </button>
-                </div>
-                <div class='modal-body'>
-                
-                    <div class='form-group'>
-                          <label for='filepic'>Upload Picture</label>
-                          <input type='file' accept='.png, .jpg, .jpeg' class='form-control' id='filepic' />
-                        
-                    </div>
-
-
-                    <div class='form-group' id='uploaderror' >
-                    </div>
-
-                </div>
-                <div class='modal-footer'>
-                  <button id='upload-buttonclose' type='button' class='btn btn-danger' data-dismiss='modal'>Close</button>
-                  <!-- <button type='submit' class='btn btn-primary btn-large' value='submit' name='submit' id='myBtn' onclick='addingfunction()'>add</button> !-->
-                  <button id='upload-button' class='btn btn-primary btn-large' onclick='uploadfile()'> Upload </button> <img src='images/ajax-loader.gif' id='ajaxloadingforpic'/>
-                </div>
-              </div>
-            </div>
-      </div>
-      
-  
-
-
-
-<!-- START --> 
-    <div class="container-fluid">
-    
-
-
-
-    <h2 class="mb-4">My Documents</h2>
-    <div class="row" style="margin-top: 10px;">
-       
-
-       <div class="form-group">
-         <label for="viewtype">Browse Document</label>
-         <select class="form-control" name="" id="viewtype">
-           <option value="0">-- Select Document--</option>
-           <option value="All">All</option>
-           <option value="National">National Documents</option>
-           <option value="Marina">Marina Documents</option>
-           <option value="Application">Application Documents</option>
-         </select>
-       </div>
-
-
-       <div id="showhiring">
-              <div class="form-group" style="margin-left: 20px;">
-                    <label for="hiringcmb">Select Application</label>
-                    <select class="form-control" id="hiringcmb">
-                  
-                    <?php 
-                      require "loadcmb.php"; 
-                      loadhiringcmb(); 
-                    ?> 
-                    </select>
-                </div>
-       </div>
 
      
 
 
-  </div>
 
 
-      <div class="row" id="reloadpage" style="margin-top: 10px;">
-            <?php 
-              if(isset($_GET['content']))
-              {
-                  loaddocumentlist($_GET['content']);
-              }
-            ?> 
-      </div>
-        
+        <script>
+          $('#exampleModal').on('show.bs.modal', event => {
+            var button = $(event.relatedTarget);
+            var modal = $(this);
+            // Use above variables to manipulate the DOM
+            
+          });
 
 
 
+        </script>
 
+
+<div class="row">
+          <ul class="nav nav-tabs">
+                <li class="nav-item">
+                  <a class="nav-link" href="home.php">Personal Details</a>
+                </li>
+               
+                <li class="nav-item">
+                  <a class="nav-link " aria-current="page" href="education.php">Educational attainment</a>
+                </li>
+
+                <li class="nav-item">
+                  <a class="nav-link " href="family.php">Family details</a>
+                </li>  
+
+                            
+                <li class="nav-item">
+                  <a class="nav-link <?php if(isset($_GET['content'])&&$_GET['content']=='national'){echo 'active';}?>" href="my_documents.php?content=national">National Document</a>
+                </li> 
+
+                <li class="nav-item">
+                  <a class="nav-link <?php if(isset($_GET['content'])&&$_GET['content']=='marina'){echo 'active';}?>" href="my_documents.php?content=marina">Marina Document</a>
+                </li> 
+
+                <li class="nav-item">
+                  <a class="nav-link <?php if(isset($_GET['content'])&&$_GET['content']=='all'){echo 'active';}?>" href="my_documents.php?content=all">All Documents</a>
+                </li> 
+
+                <li class="nav-item">
+                  <a class="nav-link" href="seaservice.php">Sea Service</a>
+                </li>  
+            
+          </ul>
+</div>
+
+<!-- START --> 
+<style>
+h6 
+{
+  color:black;
+}
+
+</style>
+
+
+<div style="padding: 10px; height:70%;">
+
+
+    <div class="row" id="reloadpage">
+      <?php 
+        if(isset($_GET['content']))
+        {
+            loaddocumentlist($_GET['content']);
+
+        }
+      ?> 
+
+      
     </div>
+
+
+
+</div>
+
+
+
+  
+
+
+</div>
+          
+
+
+          
+
+
+     <!-- INSERT YOUR CODE HERE-->
+     
+     
+
 
 
 
@@ -815,59 +602,15 @@ if (!file_exists('../userdocuments/uploads/' . $username)) {
 
 		</div>
 
-  
     <script src="js/mainjava.js"></script> 
 
   
-  </body>
+    <script>
+        
+          
+      
 
-
-
-
-  <script>
-
-  const hiringcmb = document.getElementById("hiringcmb"); 
-  const viewtypecmb = document.getElementById("viewtype"); 
-
-
-  viewtypecmb.addEventListener("change",function()
-  {
-
-    var myvalue = viewtypecmb.value
-
-    if(myvalue=="Application")
-    {
-      $("#showhiring").show();
-    }
-
-
-  })
-
-
-  hiringcmb.addEventListener("change",function()
-  {
-   
-    let thehiringid = $("#hiringcmb").val(); 
-    $("#loading").show(); 
-    $.post("upload_browse.php",
-    {
-      myhiringid: thehiringid
-    },function(result)
-    {
-      $("#loading").hide(); 
-      $("#reloadpage").empty(); 
-      $("#reloadpage").append(result); 
-
-    }); 
-
-
-    console.log("enter");
-
-
-
-  })
-
-  $('#issuedate').daterangepicker({
+            $('#issuedate').daterangepicker({
                 "singleDatePicker": true,
                  "showDropdowns": true,
                 "startDate": '01-01-2000',
@@ -889,13 +632,14 @@ if (!file_exists('../userdocuments/uploads/' . $username)) {
 
             document.getElementById("expirydate").value = "01-01-2000";
           
-
-
+     
 
   </script>
 
+  </body>
+
   
-<script src="js/modules.js"></script> 
+  <script src="js/modules.js"></script> 
 
 
 </html>
