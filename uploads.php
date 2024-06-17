@@ -763,7 +763,7 @@ if (!file_exists('../userdocuments/uploads/' . $username)) {
     <div class="row" style="margin-top: 10px;">
        
 
-       <div class="form-group">
+       <div class="form-group" style="margin-right: 10px;">
          <label for="viewtype">Browse Document</label>
          <select class="form-control" name="" id="viewtype">
            <option value="0">-- Select Document--</option>
@@ -789,7 +789,7 @@ if (!file_exists('../userdocuments/uploads/' . $username)) {
        </div>
 
        <div id="showaddcmb">
-        <div class='form-group' style='margin-left: 10px;'>
+        <div class='form-group''>
             <label for='adddoc_cmb'>Select Document</label>
             <select class='form-control' id='adddoc_cmb'> 
             
@@ -872,22 +872,18 @@ if (!file_exists('../userdocuments/uploads/' . $username)) {
   hiringcmb.addEventListener("change",function()
   {
    
-    let thehiringid = $("#hiringcmb").val(); 
-    $("#loading").show(); 
-    $.post("upload_browse.php",
-    {
-      myhiringid: thehiringid
-    },function(result)
-    {
-      $("#loading").hide(); 
-      $("#reloadpage").empty(); 
-      $("#reloadpage").append(result); 
-
-    }); 
-
-
-    console.log("enter");
-
+        let thehiringid = $("#hiringcmb").val(); 
+        // $("#loading").show(); 
+          $.post("upload_browse.php",
+          {
+            myhiringid: thehiringid
+          },function(result)
+          {
+          // $("#loading").hide(); 
+          $("#showaddcmb").show();
+          document.getElementById("adddoc_cmb").innerHTML = result;
+        }); 
+    
 
 
   })

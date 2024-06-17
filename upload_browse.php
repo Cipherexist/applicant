@@ -6,26 +6,77 @@ include 'dbconfig.php';
 @$myusername = $_COOKIE['usname']; 
    
 
-@$sqlme = "Select * from `monitoring` Where `username` Like '$myusername' and `hiringid` Like '$hiringid' and `stage` Like '2' and `status` Like 'Completed'"; 
+loadmydocumentsbyhiring($hiringid); 
 
-@$dbt = mysqli_query($sqlcon,$sqlme); 
 
-if(!mysqli_error($sqlcon))
+
+
+
+
+function loadmydocumentsbyhiring($hiringid)
 {
-    if(mysqli_num_rows($dbt)!=0)
+    include "dbconfig.php"; 
+    require 'modules.php'; 
+    
+    @$myusername = $_COOKIE['usname']; 
+    @$docid = ""; 
+    $id = $hiringid;
+    @$mydocidlist = loadhiringdocid($id); 
+
+
+    $sqldoc = "Select * from `reqlist` Where `reqid` Like '$mydocidlist'"; 
+    $dat = mysqli_query($sqlcon,$sqldoc); 
+
+    if(!mysqli_error($sqlcon))
     {
-        loadmydocumentsbyhiring($hiringid); 
+        if(mysqli_num_rows($dat)!=0)
+        {
+            echo mysqli_num_rows($dat);
+            while($rows2 = mysqli_fetch_assoc($dat))
+            {
+                @$docid = $rows2['doclistid']; 
+                @$docname = loaddocname($docid); 
+                $mysql = "SELECT * from `userdocuments` Where `username` Like '$myusername' and `docid` Like '$docid'"; 
+
+                $dbt = mysqli_query($sqlcon,$mysql);
+            
+            
+                if(!mysqli_error($sqlcon))
+                {
+                    if(mysqli_num_rows($dbt)==0)
+                    {
+                      echo "<option value='$docid'>$docname</option>"; 
+                    }
+                }
+                else 
+                {
+                    echo mysqli_error($sqlcon); 
+                }
+
+            }
+        }
+        else 
+        {
+            echo $sqldoc;
+        }
     }
     else 
     {
-        echo "<tr><td colspan=4><span class='text-danger'>Your Application is not yet approve to upload documents</span></td></tr>"; 
+        echo mysqli_error($sqlcon); 
+
     }
-    
+
+ 
+
 }
-else 
-{
-   echo mysqli_error($sqlcon); 
-}
+
+
+
+
+
+
+
+
 
 
 
