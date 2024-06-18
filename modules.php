@@ -10,7 +10,7 @@ function quiznext($email,$hiring)
     @$hiringid = $hiring;
     @$username = $email;
 
-        $callsql = "Select * from `monitoring_quiz` Where hiringid Like '$hiringid' and username Like '$username'"; 
+        $callsql = "Select * from `monitoring_quiz` Where hiringid Like '$hiringid' and username Like '$username' ORDER BY ID ASC"; 
         $daxme = mysqli_query($sqlcon,$callsql); 
 
 	
@@ -27,13 +27,13 @@ function quiznext($email,$hiring)
 					@$count = $count + 1;
 					@$isactive =  $dips['active'];
 					@$status =  $dips['status'];
-					@$id =  $dips['id'];
+					@$id =  $dips['ID'];
 
 				//	echo $id;
 					if($status=='Pending')
 					{
 					//	echo $id;
-						@$mysql = "UPDATE `monitoring_quiz` SET `active`='yes' Where id Like '$id'"; 
+						@$mysql = "UPDATE `monitoring_quiz` SET `active`='yes' Where ID Like '$id'"; 
 						//echo "UPDATE SESSION SQL: " . $mysql;
 				
 						mysqli_query($sqlcon,$mysql); 
@@ -49,7 +49,7 @@ function quiznext($email,$hiring)
 					}
 					else 
 					{
-						@$mysql = "UPDATE `monitoring_quiz` SET `active`='' Where id Like '$id'"; 
+						@$mysql = "UPDATE `monitoring_quiz` SET `active`='' Where ID Like '$id'"; 
 						//echo "UPDATE SESSION SQL: " . $mysql;
 				
 						mysqli_query($sqlcon,$mysql); 
@@ -223,28 +223,41 @@ function loaddoctype($id)
 
 
 
-// function loadexpirationcheck($mydate)
-// {
-//     $getdate = loadregistrationformat($mydate);
-//     $gettoday = loadregistrationdatetoday(); 
-//     //explode the date to get month, day and year
+function loadexpirationcheck($mydate)
+{
+    $getdate = loadregistrationformat($mydate);
+    $gettoday = loadregistrationdatetoday(); 
+    //explode the date to get month, day and year
 
-//     $total  = $gettoday - $getdate; 
-
-
-
-//     if($total<0)
-//     {
-//         return false;
-//     }
-//     else 
-//     {
-//         return true; 
-//     }
+    $total  = $gettoday - $getdate; 
 
 
 
-// }
+    if($total<0)
+    {
+        return false;
+    }
+    else 
+    {
+        return true; 
+    }
+
+}
+
+function loadregistrationformat($mydate)
+{
+    $format = $mydate;
+    //explode the date to get month, day and year
+    $seperate = explode("/", $format);
+    //get age from date or birthdate
+    $day = $seperate[0];
+    $month = $seperate[1];
+    $year =  $seperate[2]; 
+    $result = $year . $month . $day;
+    
+    return $result; 
+}
+
 
 
 function checkstage2examfinish($hiringid,$username)

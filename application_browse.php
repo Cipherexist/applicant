@@ -140,58 +140,7 @@
       }
 
 
-      function updatestage2examfinish($hiringid,$username)
-      {
-        $proceed = 0;
-
-        include "dbconfig.php"; 
-        
-        $callsql = "Select * from `monitoring_quiz` Where hiringid Like '$hiringid' and username Like '$username'"; 
-        $daxme = mysqli_query($sqlcon,$callsql); 
-
-        if(!mysqli_error($sqlcon))
-        {
-          $totalpassed = mysqli_num_rows($daxme); 
-            if($totalpassed!=0)
-            {
-                  $colpass = 0; 
-            
-
-                  while($rows=mysqli_fetch_assoc($daxme))
-                  {
-                    if($rows['status']=="Passed"||$rows['status']=="Failed")
-                    {
-                      $colpass +=1; 
-                    }
-                  }
-        
-                  if($colpass==$totalpassed)
-                  {
-                    updatethemonitor($hiringid,"Exam Finished"); 
-                  }
-                  elseif($colpass>=1)
-                  {
-                    updatethemonitor($hiringid,"Exam Ongoing"); 
-                  }
-                  
-            }
-       
-      
-        }
-        else 
-        {
-            echo mysqli_error($sqlcon); 
-
-        }
-
-
-      return $proceed; 
-    
-      
-      }
-      
-      
-
+ 
 
 
 
@@ -472,9 +421,9 @@
                                    
                                   
       
-                                    $callsql = "Select * from `monitoring_quiz` Where hiringid Like '$hiringid' and username Like '$username'"; 
+                                    $callsql = "Select * from `monitoring_quiz` Where hiringid Like '$hiringid' and username Like '$username' ORDER BY ID ASC"; 
                                     $daxme = mysqli_query($sqlcon,$callsql); 
-      
+                                    @$disabledother = false; 
                                     if(!mysqli_error($sqlcon))
                                     {
                                       while($dips = mysqli_fetch_assoc($daxme))
@@ -492,30 +441,41 @@
                                           @$disabled = ""; 
                                           
   
-                                         if($thestatus=='Pending'||$thestatus=='Ongoing')
-                                         {
-                                          $disabled = ""; 
-  
-                                          echo "
-                                          <tr> 
-                                              <td>$functionquiz</td> 
-                                              <td>$thestatus</td> 
-                                              <td>  <button type='button' class='btn btn-sm btn-success' onclick='popupwindow($thefunction,$thehiringid,$usernow)' $disabled>Proceed</button>  </td> 
-                                          </tr>";
-                                         }
-                                         else 
-                                         {
-                                       
-                                           $disabled =  "disabled"; 
-                                           echo "
-                                           <tr> 
-                                               <td>$functionquiz</td> 
-                                               <td>For Checking</td> 
-                                               <td>  <button type='button' class='btn btn-sm btn-success' onclick='popupwindow($thefunction,$thehiringid,$usernow)' $disabled>Proceed</button>  </td> 
-                                           </tr>";
-                                                
-                                         
+                                          if($disabledother==false)
+                                          {
+                                            if($thestatus=='Pending'||$thestatus=='Ongoing')
+                                            {
+                                              $disabled = ""; 
+                                              $disabledother=true; 
+                                              echo "
+                                              <tr> 
+                                                  <td>$functionquiz</td> 
+                                                  <td>$thestatus</td> 
+                                                  <td>  <button type='button' class='btn btn-sm btn-success' onclick='popupwindow($thefunction,$thehiringid,$usernow)' $disabled>Proceed</button>  </td> 
+                                              </tr>";
+                                            }
+                                            else 
+                                            {
+                                          
+                                              $disabled =  "disabled"; 
+                                              echo "
+                                              <tr> 
+                                                  <td>$functionquiz</td> 
+                                                  <td>For Checking</td> 
+                                                  <td>  <button type='button' class='btn btn-sm btn-success' onclick='popupwindow($thefunction,$thehiringid,$usernow)' $disabled>Done</button>  </td> 
+                                              </tr>";
+                                            }
                                           }
+                                          else 
+                                          {
+                                            $disabled =  "disabled"; 
+                                            echo "
+                                            <tr> 
+                                                <td>$functionquiz</td> 
+                                                <td>Pending</td> 
+                                                <td>  <button type='button' class='btn btn-sm btn-success' onclick='popupwindow($thefunction,$thehiringid,$usernow)' $disabled>Proceed</button>  </td> 
+                                            </tr>";
+                                          } 
   
                                         
                                       }
