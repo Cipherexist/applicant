@@ -3,29 +3,48 @@ include 'forcookie.php';
 include 'modules.php';
 include 'loadfunction2.php'; 
 
+
 @$myusername = $_COOKIE['usname']; 
 
 $qqq = "SELECT * from `monitoring_quiz` Where `username` Like '$myusername' and `active` Like 'yes'"; 
 
 $das = mysqli_query($sqlcon,$qqq); 
 
-
-if(!mysqli_error($sqlcon))
+if(mysqli_num_rows($das)!=0)
 {
-  while($dd = mysqli_fetch_assoc($das))
+  if(!mysqli_error($sqlcon))
   {
-    @$theviewtype =  $dd['functionid'];
-    @$thehiring =  $dd['hiringid']; 
-   // echo "viewtype" . $theviewtype; 
-  //  echo "   hiring" . $thehiring; 
+    while($dd = mysqli_fetch_assoc($das))
+    {
+      @$theviewtype =  $dd['functionid'];
+      @$thehiring =  $dd['hiringid']; 
+    // echo "viewtype" . $theviewtype; 
+    //  echo "   hiring" . $thehiring; 
+    }
+
+    
+
   }
-
-  
-
+  else 
+  {
+    echo mysqli_error($sqlcon); 
+  }
 }
 else 
 {
-  echo mysqli_error($sqlcon); 
+  echo '
+  <script> 
+  window.location.replace("application_status.php");</script> 
+  ';	
+}
+
+
+if(checkstage2exambeforefinish($thehiring,$_COOKIE['usname'])=='End of Examination')
+{
+  echo '
+  <script> 
+  window.location.replace("index.php");</script> 
+  ';	
 }
 
 @$thecompetence =  "1";
@@ -433,10 +452,15 @@ function checkstatus($viewtype, $competence, $session)
 
   <div id="examform" class='container' style='margin-top: 40px; padding-left: 20px; padding-right: 20px; padding-top: 20px; padding-bottom: 20px;'>
 
+
+    <div class="row">
+      <?php examinationpanel($thehiring, $myusername); ?>
+    </div>
     <div class='row'>
       <?php
       @$viewtypecode = $theviewtype; 
       
+   
       echo "<p>Quiz: <input type='hidden' id='quizcode' value='$viewtypecode'>". loadquizname($viewtypecode) ."</input></p><br>"; 
       ?>
       </div> 
@@ -528,6 +552,19 @@ function checkstatus($viewtype, $competence, $session)
           <button type='button' id="buttonreturn" class='btn btn-primary' onclick='returnme()'>
           Return to Main page
           </button>
+
+          <?php 
+
+    
+              if(checkstage2exambeforefinish($myhiring,$_COOKIE['usname'])!='Exam Finished')
+              {
+                echo "
+                <button type='button' id='button_skip' class='btn btn-warning' onclick='nextme()'>
+                Proceed Next
+                </button>";
+              }
+          ?>
+       
 
           <?php
 
@@ -632,6 +669,7 @@ function sendanswer()
               $('#buttonnext').hide();
               $('#buttonprev').hide();
               $('#buttonreturn').show();
+              $('#button_skip').show();
               $('#buttonretake').show();
               $('#reloadquestion').empty();
               $('#reloadquestion').append(result);
@@ -722,6 +760,10 @@ function returnme()
    window.location.replace("application_status.php");
 
 }
+function nextme()
+{
+  window.location.replace("quizmode.php");
+}
 
 
 function showexam(classno,mycompetence)
@@ -745,6 +787,7 @@ function showresult()
       $('#buttonnext').hide();
       $('#buttonprev').hide();
     $('#buttonreturn').show();
+    $('#button_skip').show();
    $('#buttonretake').show();
    $('#mycurrentquestion').hide();
    
@@ -917,6 +960,7 @@ $(document).ready(function()
 
    // window.opener.location.reload();
     $('#buttonreturn').hide();
+    $('#button_skip').hide();
     $('#buttonretake').hide();
     $('#examform').hide();
     $('#resultverify').hide();

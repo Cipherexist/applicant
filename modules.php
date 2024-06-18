@@ -1,6 +1,192 @@
 <?php 
 
 
+function quiznext($email,$hiring)
+{
+	
+    include 'dbconfig.php'; 
+
+  
+    @$hiringid = $hiring;
+    @$username = $email;
+
+        $callsql = "Select * from `monitoring_quiz` Where hiringid Like '$hiringid' and username Like '$username'"; 
+        $daxme = mysqli_query($sqlcon,$callsql); 
+
+	
+		//echo $callsql;
+        if(!mysqli_error($sqlcon))
+        {
+		  if(mysqli_num_rows($daxme)!=0)
+		  {
+				$count = 0; 
+				while($dips = mysqli_fetch_assoc($daxme))
+				{
+
+				
+					@$count = $count + 1;
+					@$isactive =  $dips['active'];
+					@$status =  $dips['status'];
+					@$id =  $dips['id'];
+
+				//	echo $id;
+					if($status=='Pending')
+					{
+					//	echo $id;
+						@$mysql = "UPDATE `monitoring_quiz` SET `active`='yes' Where id Like '$id'"; 
+						//echo "UPDATE SESSION SQL: " . $mysql;
+				
+						mysqli_query($sqlcon,$mysql); 
+						if(!mysqli_error($sqlcon))
+						{
+							break;
+						}
+						else 
+						{
+							echo mysqli_error($sqlcon);
+						}
+						
+					}
+					else 
+					{
+						@$mysql = "UPDATE `monitoring_quiz` SET `active`='' Where id Like '$id'"; 
+						//echo "UPDATE SESSION SQL: " . $mysql;
+				
+						mysqli_query($sqlcon,$mysql); 
+						if(!mysqli_error($sqlcon))
+						{
+
+						}
+						else 
+						{
+							echo mysqli_error($sqlcon);
+						}
+					}
+				
+				}
+		  }
+		  else 
+		  {
+			echo "No data to show";
+		  }
+	
+        }
+        else 
+        {
+          echo mysqli_error($sqlcon);
+        }
+
+}
+
+
+function updatestage2examfinish($hiringid,$username)
+{
+  $proceed = 0;
+
+  include "dbconfig.php"; 
+  
+  $callsql = "Select * from `monitoring_quiz` Where hiringid Like '$hiringid' and username Like '$username'"; 
+  $daxme = mysqli_query($sqlcon,$callsql); 
+
+  if(!mysqli_error($sqlcon))
+  {
+	$totalpassed = mysqli_num_rows($daxme); 
+	  if($totalpassed!=0)
+	  {
+			$colpass = 0; 
+	  
+
+			while($rows=mysqli_fetch_assoc($daxme))
+			{
+			  if($rows['status']=="Passed"||$rows['status']=="Failed")
+			  {
+				$colpass +=1; 
+			  }
+			}
+  
+			if($colpass==$totalpassed)
+			{
+			  updatethemonitor($hiringid,"Exam Finished"); 
+			}
+			elseif($colpass>=1)
+			{
+			  updatethemonitor($hiringid,"Exam Ongoing"); 
+			}
+			
+	  }
+ 
+
+  }
+  else 
+  {
+	  echo mysqli_error($sqlcon); 
+
+  }
+
+
+return $proceed; 
+
+
+}
+
+
+
+function checkstage2exambeforefinish($hiringid,$username)
+{
+  $proceed = 0;
+
+  include "dbconfig.php"; 
+  
+  $callsql = "Select * from `monitoring_quiz` Where hiringid Like '$hiringid' and username Like '$username'"; 
+  $daxme = mysqli_query($sqlcon,$callsql); 
+
+  if(!mysqli_error($sqlcon))
+  {
+	$totalpassed = mysqli_num_rows($daxme); 
+	  if($totalpassed!=0)
+	  {
+			$colpass = 0; 
+	  
+
+			while($rows=mysqli_fetch_assoc($daxme))
+			{
+			  if($rows['status']=="Passed"||$rows['status']=="Failed")
+			  {
+				$colpass +=1; 
+			  }
+			}
+			$totalcount = $totalpassed - $colpass;
+  
+			if($totalcount==1)
+			{
+			 return "Exam Finished";
+			}
+			elseif($totalcount==0)
+			{
+			  return "End of Examination";
+			}
+			else
+			{
+			  return "Exam Ongoing";
+			}
+			
+	  }
+ 
+
+  }
+  else 
+  {
+	  echo mysqli_error($sqlcon); 
+
+  }
+
+
+return $proceed; 
+
+
+}
+
+
 
 function loadregistrationtime()
 {
@@ -37,28 +223,81 @@ function loaddoctype($id)
 
 
 
-function loadexpirationcheck($mydate)
+// function loadexpirationcheck($mydate)
+// {
+//     $getdate = loadregistrationformat($mydate);
+//     $gettoday = loadregistrationdatetoday(); 
+//     //explode the date to get month, day and year
+
+//     $total  = $gettoday - $getdate; 
+
+
+
+//     if($total<0)
+//     {
+//         return false;
+//     }
+//     else 
+//     {
+//         return true; 
+//     }
+
+
+
+// }
+
+
+function checkstage2examfinish($hiringid,$username)
 {
-    $getdate = loadregistrationformat($mydate);
-    $gettoday = loadregistrationdatetoday(); 
-    //explode the date to get month, day and year
+  $proceed = 0;
 
-    $total  = $gettoday - $getdate; 
+  include "dbconfig.php"; 
+  
+  $callsql = "Select * from `monitoring_quiz` Where hiringid Like '$hiringid' and username Like '$username'"; 
+  $daxme = mysqli_query($sqlcon,$callsql); 
+
+  if(!mysqli_error($sqlcon))
+  {
+	$totalpassed = mysqli_num_rows($daxme); 
+	  if($totalpassed!=0)
+	  {
+			$colpass = 0; 
+	  
+
+			while($rows=mysqli_fetch_assoc($daxme))
+			{
+			  if($rows['status']=="Passed"||$rows['status']=="Failed")
+			  {
+				$colpass +=1; 
+			  }
+			}
+  
+			if($colpass==$totalpassed)
+			{
+			
+			 return "Exam Finished";
+			}
+			elseif($colpass>=1)
+			{
+			  return "Exam Ongoing";
+			}
+			
+	  }
+ 
+
+  }
+  else 
+  {
+	  echo mysqli_error($sqlcon); 
+
+  }
 
 
-
-    if($total<0)
-    {
-        return false;
-    }
-    else 
-    {
-        return true; 
-    }
-
+return $proceed; 
 
 
 }
+
 
 
 function loadcompletename($username)

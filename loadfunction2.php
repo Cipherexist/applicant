@@ -12,6 +12,68 @@ function deletelastsession($course,$trainee,$session)
     }
 } 
 
+function examinationpanel($hiringtype, $myusername)
+{
+
+    include 'dbconfig.php'; 
+
+  
+    @$hiringid = $hiringtype;
+    @$username = $myusername;
+
+    echo 
+    "<nav aria-label='...'>
+    <ul class='pagination pagination-sm'>"; 
+
+        $callsql = "Select * from `monitoring_quiz` Where hiringid Like '$hiringid' and username Like '$username'"; 
+        $daxme = mysqli_query($sqlcon,$callsql); 
+
+        if(!mysqli_error($sqlcon))
+        {
+            $count = 0; 
+          while($dips = mysqli_fetch_assoc($daxme))
+          {
+            //   @$val = $dips['session']; 
+            //   @$rem = 5-$val; 
+                @$count = $count + 1;
+            //   @$functiononly = $dips['functionid']; 
+            //   @$thestatus = $dips['status']; 
+            //    @$functionquiz =  loadquizshort($functiononly); 
+            //   @$theaddress = '"'. "quizmode.php?function=$functiononly&qn=10&hiringid=$hiringid" .'"'; 
+            //   @$thefunction = '"'. $dips['functionid'] .'"'; 
+            //   @$thehiringid = '"'. $hiringid . '"'; 
+            //   @$usernow = '"'. $username . '"'; 
+            //   @$disabled = ""; 
+              
+            @$isactive =  $dips['active'];
+            if($isactive=='yes')
+            {
+              echo "<li class='page-item active'><a class='page-link'>EXAM $count: </a></li>";
+            }
+            else 
+            {
+                echo "<li class='page-item disabled'><a class='page-link'>EXAM $count: </a></li>";
+            }
+
+            
+          }
+        }
+        else 
+        {
+          echo mysqli_error($sqlcon);
+        }
+
+
+    // echo "
+    //   <li class='page-item active'><a class='page-link'>EXAM 1: ".  $hiringtype . $username. "</a></li>
+    //   <li class='page-item disabled'><a class='page-link' href='#'>2 <span class='sr-only'>(current)</span></a></li>
+    //   <li class='page-item disabled'><a class='page-link' href='#'>3</a></li>
+    // ";
+
+
+    echo "</ul>";
+  echo "</nav>";
+}
 
 function loadmyquestion($qnumber,$mycode,$mysession,$hiringid)
 {
@@ -30,11 +92,11 @@ function loadmyquestion($qnumber,$mycode,$mysession,$hiringid)
     @$newsession = $mysession; 
     @$mycompetence = $competence; 
 
-$mysqli = "Select * from onlineresults Where course Like '$myclasscode'  and qno Like '$mynewnumber' and username Like '$traineeid' and session Like '$newsession' and hiringid Like '$myhiring'"; 
-//echo $mysqli;
-@$thesqlme =  "'" + $mysqli + "'"; 
+    $mysqli = "Select * from onlineresults Where course Like '$myclasscode'  and qno Like '$mynewnumber' and username Like '$traineeid' and session Like '$newsession' and hiringid Like '$myhiring'"; 
+    //echo $mysqli;
+    @$thesqlme =  "'" . $mysqli . "'"; 
 
-$dba = mysqli_query($sqlcon,$mysqli); 
+    $dba = mysqli_query($sqlcon,$mysqli); 
 
     if(!mysqli_error($sqlcon))
     {
@@ -135,7 +197,19 @@ $dba = mysqli_query($sqlcon,$mysqli);
                checkmylastsessiononly($traineeid,$myclasscode,$myhiring,$newsession);
                 updatestatus($traineeid,$myhiring,$myclasscode,"Failed"); 
                 sendexamemail($myhiring); 
-                echo "<h4>Your Examination is Finished</h4>";
+                quiznext($traineeid,$myhiring);
+                updatestage2examfinish($myhiring,$traineeid); 
+                if(checkstage2examfinish($myhiring,$traineeid)=='Exam Finished')
+                {
+                
+                    echo "<h4>All Examination is finished</h4>";
+                }
+                else 
+                {
+                    echo "<h4>Your Examination is Finished</h4>";
+                }
+            
+           
             }
             else 
             {
@@ -147,7 +221,17 @@ $dba = mysqli_query($sqlcon,$mysqli);
                sendexamemail($myhiring); 
                 checkmylastsessiononly($traineeid,$myclasscode,$myhiring,$newsession);
               // echo "<h4 style='color: green;'> Congratulations you PASSED the Exam! </h4>";
-                echo "<h4>Your Examination is Finished</h4>";
+                 quiznext($traineeid,$myhiring);
+                 updatestage2examfinish($myhiring,$traineeid); 
+                 if(checkstage2examfinish($myhiring,$traineeid)=='Exam Finished')
+                 {
+                 
+                     echo "<h4>All Examination is finished</h4>";
+                 }
+                 else 
+                 {
+                     echo "<h4>Your Examination is Finished</h4>";
+                 }
            
             }
          }

@@ -454,7 +454,8 @@
                             <h5 class='card-title'>Examination</h5>
                             <p class='card-text'>REQ: to passed the exam atleast 70%</p>"; 
 
-                            if($stage2status=="Pending")
+                           
+                            if($stage2status==1)
                             {
                               echo "
                               <table class='table'> 
