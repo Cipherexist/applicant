@@ -23,7 +23,7 @@ if(!mysqli_error($sqlcon))
         {
             if(!mysqli_error($sqlcon)) 
             {
-                echo loadmydocumentsbyhiring($hiringid); 
+                loaddocumentlist("all");
             }
     
         }

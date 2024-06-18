@@ -5,99 +5,7 @@
       @$hiringid = $_POST['idme'];
       @$username = $_COOKIE['usname']; 
 
-
-  /*
-      if(loadnumberofdataall('monitoring',"Where `hiringid` Like '$hiringid' and `username`='$username'")==0)
-      {
-        $sqlme = "SELECT * from `hiring` Where ID Like '$hiringid'";
-        $dbt = mysqli_query($sqlcon,$sqlme); 
-
-        if(!mysqli_error($sqlcon))
-        {
-          while($rows = mysqli_fetch_assoc($dbt))
-          {
-            @$docid = $rows['docid']; 
-            @$quizid = $rows['quizid']; 
-            @$level = $rows['level']; 
-
-            $x = 0; 
-
-            for($x=1;$x<=$level;$x++)
-            {
-              $savesql = "INSERT INTO `monitoring`(`hiringid`,`stage`,`username`,`docid`,`quizid`,`status`,`datedone`) VALUES ('$hiringid','$x','$username','$docid','$quizid','','')"; 
-              mysqli_query($sqlcon,$savesql); 
-
-              if(!mysqli_error($sqlcon))
-              {
-              // loadthelist();
-
-
-                    if(loadnumberofdataall("monitoring_quiz","Where hiringid Like '$hiringid' and username Like '$username'")=="0")
-                    { 
-                      $selectquiz = "Select * from `quizmanagement_list` Where `quiztitle` Like '$quizid'"; 
-                      $daxme = mysqli_query($sqlcon,$selectquiz); 
-
-                      if(!mysqli_error($sqlcon))
-                      {
-                        while($dips = mysqli_fetch_assoc($daxme))
-                        {
-                          @$functiononly = $dips['quizfunction']; 
-                              @$functionquiz =  loadquizshort($functiononly); 
-                          
-                              @$theaddress = '"'. "quizmode.php?function=$functiononly&qn=10&hiringid=$hiringid" .'"'; 
-
-
-                              $sqlinsert = "INSERT INTO `monitoring_quiz`(`username`,`hiringid`,`quizid`,`functionid`,`session`,`status`,`timer`,`active`) VALUES ('$username','$hiringid','$quizid','$functiononly','1','Pending','10:00','')"; 
-                              mysqli_query($sqlcon,$sqlinsert); 
-
-                              if(!mysqli_error($sqlcon))
-                              {
-                               // loadthelist();
-                                echo "<p class='h5'>Kindly Close the form and Click again, Thank you</p>"; 
-
-                              }
-                              else 
-                              {
-                                echo mysqli_error($sqlcon); 
-                              }
-                        }
-        
-                      }
-                      else 
-                      {
-                        echo mysqli_error($sqlcon); 
-                      }
-                    }
-                    else 
-                    {
-                      loadthelist();
-                    }
-
-              }
-              else 
-              {
-                echo mysqli_error($sqlcon); 
-              }
-            }
-
-          }
-        }
-        else 
-        {
-          echo mysqli_error($sqlcon); 
-
-        }
-      }
-      else 
-      {
-        loadthelist();
-
-      }
-*/
       loadthelist();
-
-
-
 
 
       function updatestage2($hiringid,$username)
@@ -118,7 +26,43 @@
                     if($rows['status']=="Completed")
                     {
                       $proceed = 1; 
-                      updatethemonitor($hiringid,"Pending Documents"); 
+                      updatethemonitor($hiringid,"Pending Examination"); 
+                    }
+                  }
+        
+        }
+        else 
+        {
+            echo mysqli_error($sqlcon); 
+
+        }
+
+
+      return $proceed; 
+    
+      
+      }
+
+
+      function updatestage3($hiringid,$username)
+      {
+        $proceed = 0;
+
+        include "dbconfig.php"; 
+        
+        $callsql = "Select * from `monitoring` Where `hiringid` Like '$hiringid' and `username` Like '$username' and `stage` Like '3'"; 
+        $daxme = mysqli_query($sqlcon,$callsql); 
+
+        if(!mysqli_error($sqlcon))
+        {
+  
+                  while($rows=mysqli_fetch_assoc($daxme))
+                  {
+
+                    if($rows['status']=="Completed")
+                    {
+                      $proceed = 1; 
+                      updatethemonitor($hiringid,"Pending Initial Interview"); 
                     }
                   }
         
@@ -284,165 +228,10 @@
             }
             elseif ($rows['stage']=="2")
             {
-              @$status = ""; 
-              @$disable = "";
-              @$quizid = $rows['quizid'];
-              @$proceed = updatestage2($hiringid,$username); 
-              @$thecolor = "";
 
-              if($proceed==0)
-              {
-                $status = "Pending";
-                @$thecolor = "bg-info";
-              }
-              else 
-              {
-                $status = "Completed";
-                @$thecolor = "bg-success";
-              }
-
-              echo "
-              <div class='row' style='margin-top:10px; '>
-                        <div class='card col-sm-11'>
-                          <div class='card-header $thecolor text-white'>
-                           STEP 2 - Examinations (Status: $status)
-                          </div>
-                          <div class='card-body'>
-                            <h5 class='card-title'>Examination</h5>
-                            <p class='card-text'>REQ: to passed the exam atleast 70%</p>"; 
-
-                            echo "
-                            <table class='table'> 
-                              <thead> 
-                                  <tr>
-                                  <th>Function</th> 
-                                  <th>Status/Score</th> 
-                                  <th>Option</th>
-                                  </tr> 
-                              </thead> 
-                              <tbody> ";
-                              if($status=="Pending")
-                              {
-                                 
-                                
-    
-                                  $callsql = "Select * from `monitoring_quiz` Where hiringid Like '$hiringid' and username Like '$username'"; 
-                                  $daxme = mysqli_query($sqlcon,$callsql); 
-    
-                                  if(!mysqli_error($sqlcon))
-                                  {
-                                    while($dips = mysqli_fetch_assoc($daxme))
-                                    {
-                                        @$val = $dips['session']; 
-                                        @$rem = 5-$val; 
-
-                                        @$functiononly = $dips['functionid']; 
-                                        @$thestatus = $dips['status']; 
-                                          @$functionquiz =  loadquizshort($functiononly); 
-                                      //   @$theaddress = '"'. "quizmode.php?function=$functiononly&qn=10&hiringid=$hiringid" .'"'; 
-                                        @$thefunction = '"'. $dips['functionid'] .'"'; 
-                                        @$thehiringid = '"'. $hiringid . '"'; 
-                                        @$usernow = '"'. $username . '"'; 
-                                        @$disabled = ""; 
-                                        
-
-
-                                        /*
-                                            if($thestatus=='Passed')
-                                            {
-                                              $disabled =  "disabled"; 
-                                            }
-                                            else 
-                                            {
-                                              $disabled = ""; 
-                                            }
-
-                                 
-                                            if($rem>0)
-                                            {
-                                              if($thestatus=='Passed')
-                                              {
-                                                echo "
-                                                <tr> 
-                                                    <td>$functionquiz</td> 
-                                                    <td class='text-success'>PASSED</td> 
-                                                    <td>  <button type='button' class='btn btn-sm btn-success' onclick='popupwindow($thefunction,$thehiringid,$usernow)' $disabled>Proceed</button>  </td> 
-                                                </tr>";
-                                              }
-                                              else 
-                                              {
-                                                echo "
-                                                <tr> 
-                                                    <td>$functionquiz</td> 
-                                                    <td>Remaining: $rem</td> 
-                                                    <td>  <button type='button' class='btn btn-sm btn-success' onclick='popupwindow($thefunction,$thehiringid,$usernow)' $disabled>Proceed</button>  </td> 
-                                                </tr>";
-                                              }
-                                            
-                                            }
-                                            else 
-                                            {
-                                              $disabled =  "disabled"; 
-                                              echo "
-                                              <tr> 
-                                                  <td>$functionquiz</td> 
-                                                  <td>FAILED</td> 
-                                                  <td>  <button type='button' class='btn btn-sm btn-success' onclick='popupwindow($thefunction,$thehiringid,$usernow)' $disabled>Proceed</button>  </td> 
-                                              </tr>";
-                                            }
-
-                                       */
-
-                                       if($thestatus=='Pending'||$thestatus=='Ongoing')
-                                       {
-                                        $disabled = ""; 
-
-                                        echo "
-                                        <tr> 
-                                            <td>$functionquiz</td> 
-                                            <td>$thestatus</td> 
-                                            <td>  <button type='button' class='btn btn-sm btn-success' onclick='popupwindow($thefunction,$thehiringid,$usernow)' $disabled>Proceed</button>  </td> 
-                                        </tr>";
-                                       }
-                                       else 
-                                       {
-                                     
-                                         $disabled =  "disabled"; 
-                                         echo "
-                                         <tr> 
-                                             <td>$functionquiz</td> 
-                                             <td>For Checking</td> 
-                                             <td>  <button type='button' class='btn btn-sm btn-success' onclick='popupwindow($thefunction,$thehiringid,$usernow)' $disabled>Proceed</button>  </td> 
-                                         </tr>";
-                                              
-                                       
-                                        }
-
-                                      
-                                    }
-                                  }
-                                  else 
-                                  {
-                                    echo mysqli_error($sqlcon);
-                                  }
-  
-
-                                  updatestage2examfinish($hiringid,$username); 
-                              }
-                           
-                          
-
-                              
-
-                             echo "</tbody> </table>"; 
-
-                          echo "</div></div></div>"; 
-            }
-            elseif ($rows['stage']=="3")
-            {
-              @$status =  loadtextreturn("monitoring","status","Where hiringid Like '$hiringid' and username Like '$username' and stage Like '3'"); 
-              @$docnotify =  loadtextreturn("monitoring","docssubmitted","Where hiringid Like '$hiringid' and username Like '$username' and stage Like '3'"); 
-              @$docremarks =  loadtextreturn("monitoring","docremarks","Where hiringid Like '$hiringid' and username Like '$username' and stage Like '3'"); 
+              @$status =  loadtextreturn("monitoring","status","Where hiringid Like '$hiringid' and username Like '$username' and stage Like '2'"); 
+              @$docnotify =  loadtextreturn("monitoring","docssubmitted","Where hiringid Like '$hiringid' and username Like '$username' and stage Like '2'"); 
+              @$docremarks =  loadtextreturn("monitoring","docremarks","Where hiringid Like '$hiringid' and username Like '$username' and stage Like '2'"); 
             
               if($status=="Completed")
               {
@@ -460,7 +249,7 @@
               <div class='row' style='margin-top:10px;'>
                         <div class='card col-sm-11'>
                         <div class='card-header $thecolor text-white'>
-                        STEP 3 - Submit Required Documents (Status: $status)
+                        STEP 2 - Submit Required Documents (Status: $status)
                           </div>
                           <div class='card-body'>
                             <h5 class='card-title'>Documentary Requirements</h5>";
@@ -473,8 +262,6 @@
                       $totaldocuments = 0; 
                       if($status != "Completed")
                       {
-                              if(updatestage2($hiringid,$username)==1)
-                              {
                                     echo "
                                     <table class='table' style='margin-top: 10px;' id='tabledocu'>
                                       <thead>
@@ -518,7 +305,7 @@
                                           $getauth = loadtextreturn("userdocuments","authenticity","Where username Like '$username' and docid Like '$reqid'"); 
                                           $getforadmin = loadtextreturn("requirement","foradmin","Where ID Like '$reqid'"); 
                                       
-                                          echo "admin: " . $getforadmin; 
+                                       //   echo "admin: " . $getforadmin; 
 
                                           if($getforadmin==NULL||$getforadmin=="")
                                           {
@@ -624,15 +411,9 @@
                                           }
                                           else 
                                           {
-                                            echo "<a href='uploads.php' class='btn btn-sm btn-warning' style='margin-top:10px;'>Upload Documents</a>"; 
+                                            echo "<a href='uploads.php?content=all&hiringid=$hiringid' class='btn btn-sm btn-warning' style='margin-top:10px;'>Upload Documents</a>"; 
                                           }
-                                    
-
-                             }
-                            else 
-                            {
-                              echo "<p class='text-danger'> Required to finish the examination</p>";
-                            }
+                        
                       }
                       else 
                       {
@@ -640,6 +421,125 @@
                       }
      
                        echo "</div></div></div>"; 
+
+            }
+            elseif ($rows['stage']=="3")
+            {
+  
+              @$status = ""; 
+              @$disable = "";
+              @$quizid = $rows['quizid'];
+              @$proceed = updatestage3($hiringid,$username); 
+              @$stage2status = updatestage2($hiringid,$username); 
+              @$thecolor = "";
+
+              if($proceed==0)
+              {
+                $status = "Pending";
+                @$thecolor = "bg-info";
+              }
+              else 
+              {
+                $status = "Completed";
+                @$thecolor = "bg-success";
+              }
+
+              echo "
+              <div class='row' style='margin-top:10px; '>
+                        <div class='card col-sm-11'>
+                          <div class='card-header $thecolor text-white'>
+                           STEP 3 - Examinations (Status: $status)
+                          </div>
+                          <div class='card-body'>
+                            <h5 class='card-title'>Examination</h5>
+                            <p class='card-text'>REQ: to passed the exam atleast 70%</p>"; 
+
+                            if($stage2status=="Pending")
+                            {
+                              echo "
+                              <table class='table'> 
+                                <thead> 
+                                    <tr>
+                                    <th>Function</th> 
+                                    <th>Status/Score</th> 
+                                    <th>Option</th>
+                                    </tr> 
+                                </thead> 
+                                <tbody> ";
+                                if($status=="Pending")
+                                {
+                                   
+                                  
+      
+                                    $callsql = "Select * from `monitoring_quiz` Where hiringid Like '$hiringid' and username Like '$username'"; 
+                                    $daxme = mysqli_query($sqlcon,$callsql); 
+      
+                                    if(!mysqli_error($sqlcon))
+                                    {
+                                      while($dips = mysqli_fetch_assoc($daxme))
+                                      {
+                                          @$val = $dips['session']; 
+                                          @$rem = 5-$val; 
+  
+                                          @$functiononly = $dips['functionid']; 
+                                          @$thestatus = $dips['status']; 
+                                            @$functionquiz =  loadquizshort($functiononly); 
+                                        //   @$theaddress = '"'. "quizmode.php?function=$functiononly&qn=10&hiringid=$hiringid" .'"'; 
+                                          @$thefunction = '"'. $dips['functionid'] .'"'; 
+                                          @$thehiringid = '"'. $hiringid . '"'; 
+                                          @$usernow = '"'. $username . '"'; 
+                                          @$disabled = ""; 
+                                          
+  
+                                         if($thestatus=='Pending'||$thestatus=='Ongoing')
+                                         {
+                                          $disabled = ""; 
+  
+                                          echo "
+                                          <tr> 
+                                              <td>$functionquiz</td> 
+                                              <td>$thestatus</td> 
+                                              <td>  <button type='button' class='btn btn-sm btn-success' onclick='popupwindow($thefunction,$thehiringid,$usernow)' $disabled>Proceed</button>  </td> 
+                                          </tr>";
+                                         }
+                                         else 
+                                         {
+                                       
+                                           $disabled =  "disabled"; 
+                                           echo "
+                                           <tr> 
+                                               <td>$functionquiz</td> 
+                                               <td>For Checking</td> 
+                                               <td>  <button type='button' class='btn btn-sm btn-success' onclick='popupwindow($thefunction,$thehiringid,$usernow)' $disabled>Proceed</button>  </td> 
+                                           </tr>";
+                                                
+                                         
+                                          }
+  
+                                        
+                                      }
+                                    }
+                                    else 
+                                    {
+                                      echo mysqli_error($sqlcon);
+                                    }
+    
+  
+                                    updatestage2examfinish($hiringid,$username); 
+                                }
+                             
+                            
+  
+                                
+  
+                               echo "</tbody> </table>"; 
+                            }
+                            else 
+                            {
+                              echo "<p class='text-danger'>Wait for Document Approval to proceed in examination</p>";
+                            }
+                          
+                          echo "</div></div></div>"; 
             }            
             elseif ($rows['stage']=="4")
             {
@@ -718,10 +618,7 @@
 
 
                                }
-                            
-
-
-
+                          
                             }
                             else 
                             {
@@ -730,7 +627,7 @@
                           }
                           else  
                           {
-                            echo "<p class='text-danger'> Required to finish the document submittion</p>";
+                            echo "<p class='text-danger'> Required to finish the Examination</p>";
                           }
                       
 

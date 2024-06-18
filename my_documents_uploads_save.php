@@ -6,7 +6,7 @@ if(!empty($_FILES["file"]))
 {
     include "loadtables.php"; 
     include 'modules.php'; 
-    $filename = $_POST['theuser'] . "-" . loadregistrationtime();
+    $filename = $_COOKIE['usname'] . "-" . loadregistrationtime();
     $target_directory = "../userdocuments/uploads/". $_COOKIE['usname']. "/"; 
     $target_file = $target_directory.basename($_FILES["file"]["name"]);
     $filetype = strtolower(pathinfo($target_file, PATHINFO_EXTENSION)); 

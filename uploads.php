@@ -65,10 +65,10 @@ function uploadshow()
       $('#modalinupload').modal('show');
     try {
    //   $('#uploadmodal').modal('show');
-      var mydoctit = $("#doccmb").val();  
+      var mydoctit = $("#adddoc_cmb").val();  
      // alert(mydoctit); 
-      document.getElementById('doctext').innerHTML = $('#doccmb option:selected').text();
-      document.getElementById("docid").value = mydoctit; 
+      document.getElementById('doctext').innerHTML = $('#adddoc_cmb option:selected').text();
+      document.getElementById("docuid").value = mydoctit; 
       $("#ajaxloading2").hide(); 
 
 
@@ -104,8 +104,9 @@ function uploadshow()
           {
             $("#loading").hide();
             $("#ajaxloadingforpic").hide();
-            $("#showhiring").hide();
+          //  $("#showhiring").hide();
             $("#showaddcmb").hide();
+            $("#showaddbtn").hide()
         });
 
 
@@ -197,12 +198,13 @@ function uploadshow()
               } 
               else if (result.isDenied) 
               {
+          
                 // Swal.fire('Changes are not saved', '', 'info')
               }
               }); 
 
 
-
+              $("#loading").hide()
         }
 
 
@@ -322,7 +324,7 @@ function uploadshow()
                  form_data.append("file",file_data); 
                  form_data.append("mydocid",doc_id);
                  form_data.append("theuser",doc_username); 
-                 form_data.append("content",doc_content); 
+                 form_data.append("content","all"); 
      
                  
                  $.ajax({
@@ -657,7 +659,28 @@ box-shadow: rgba(255,255,255, 0.75) 1.5em 0 0 0, rgba(255,255,255, 0.75) 1.1em 1
 
 if (!file_exists('../userdocuments/uploads/' . $username)) {
   mkdir('../userdocuments/uploads/' . $username, 0777, true);
+
+
+
 }
+
+@$upload_hiringid = 0; 
+if(isset($_GET['content']))
+{
+  echo "<input type='hidden' id='contentupload' value='". $_GET['content'] ."'>";  
+}
+if(isset($_GET['hiringid']))
+{
+  $upload_hiringid =  $_GET['hiringid'];
+  echo "<input type='hidden' id='hiringupload' value='". $_GET['hiringid'] ."'>";  
+}
+else 
+ {
+  echo "<input type='hidden' id='hiringupload' value='0'>";  
+ }
+
+ 
+
 
 
 ?> 
@@ -776,7 +799,7 @@ if (!file_exists('../userdocuments/uploads/' . $username)) {
 
 
        <div id="showhiring">
-              <div class="form-group" style="margin-left: 20px;">
+              <div class="form-group">
                     <label for="hiringcmb">Select Application</label>
                     <select class="form-control" id="hiringcmb">
                   
@@ -788,8 +811,9 @@ if (!file_exists('../userdocuments/uploads/' . $username)) {
                 </div>
        </div>
 
+      
        <div id="showaddcmb">
-        <div class='form-group''>
+        <div class='form-group'>
             <label for='adddoc_cmb'>Select Document</label>
             <select class='form-control' id='adddoc_cmb'> 
             
@@ -800,11 +824,15 @@ if (!file_exists('../userdocuments/uploads/' . $username)) {
           </div>
        
        </div>
-
-     
-
-
   </div>
+
+  
+  <div class="row" id="showaddbtn">
+        <button type="button" class="btn btn-primary btn-sm" onclick="uploadshow()">Upload</button> 
+
+</div>
+
+
 
 
       <div class="row" id="reloadpage" style="margin-top: 10px;">
@@ -813,6 +841,15 @@ if (!file_exists('../userdocuments/uploads/' . $username)) {
               {
                   loaddocumentlist($_GET['content']);
               }
+              if(isset($_GET['hiringid']))
+              {
+                if($upload_hiringid==0)
+                {
+                  loadmydocumentsbyhiring($_GET['hiringid']);
+                }
+           
+              }
+           
             ?> 
       </div>
         
@@ -840,10 +877,23 @@ if (!file_exists('../userdocuments/uploads/' . $username)) {
 
   <script>
 
+  const hiringupload =document.getElementById("hiringupload"); 
+
   const hiringcmb = document.getElementById("hiringcmb"); 
   const viewtypecmb = document.getElementById("viewtype"); 
 
 
+  if(hiringupload.value!=0)
+  {
+    viewtypecmb.value = "Application"; 
+    $("#showhiring").show()
+   document.getElementById("hiringcmb").value = hiringupload.value
+  }
+  else 
+  {
+    $("#showhiring").hide()
+  }
+  
   viewtypecmb.addEventListener("change",function()
   {
 
@@ -861,6 +911,7 @@ if (!file_exists('../userdocuments/uploads/' . $username)) {
       },function(result)
       { 
         $("#showaddcmb").show();
+        $("#showaddbtn").show();
         document.getElementById("adddoc_cmb").innerHTML = result;
        // console.log(result)
       })

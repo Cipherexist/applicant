@@ -643,50 +643,6 @@ box-shadow: rgba(255,255,255, 0.75) 1.5em 0 0 0, rgba(255,255,255, 0.75) 1.1em 1
 <?php  loadhirings(); ?>
 
 
-
-
-
-
-
-<!--
-      <div class="col-md-6" style="margin-top: 10px;"> 
-          <div class="card">
-            <div class="card-header">
-              JOB HIRING FOR ENGINE OFFICERS
-            </div>
-            
-            <div class="card-body">
-              <h5 class="card-title">URGENT!! MASTER - 01/12/2023</h5>
-              <p class="card-text">REQ: Must be master mariner in order to apply</p>
-            <button type="button" class="btn btn-sm btn-success" data-toggle='modal' data-target='#modelId'>Apply</button>
-            <button type="button" class="btn btn-sm btn-danger">hide</button>
-            </div>
-          </div>
-      </div>
--->
-<!--       
-      <div class="col-md-6" style="margin-top: 10px;">
-          <div class="card">
-            <div class="card-header">
-              JOB HIRING FOR C/M
-            </div>
-            
-            <div class="card-body">
-              <h5 class="card-title">URGENT!! CHIEFMATE BULK  - 01/12/2023</h5>
-              <p class="card-text">Required to passed the examination</p>
-            <button type="button" class="btn btn-sm btn-success">Apply</button>
-            <button type="button" class="btn btn-sm btn-danger">hide</button>
-            </div>
-
-          </div>
-      </div>     
-      
-        -->
-     <!-- INSERT YOUR CODE HERE-->
-
-
-
-
 		</div>
 
     <script src="js/mainjava.js"></script> 

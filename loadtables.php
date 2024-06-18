@@ -31,14 +31,14 @@ function loadhirings()
                             @$quizidme = $rows['quizid']; 
                           //  @$getifstatusok = loadnumberofdataall("quizmanagement_list","Where `quiztitle` Like '$quizidme'"); 
                             @$numberofexam = loadnumberofdataall("quizmanagement_list","Where `quiztitle` Like '$quizidme'"); 
-                            @$hiringtitle = $rows['hiringtitle']; 
+                            @$hiringtitle = loadcompleterank($rows['positionid']) . " - " . loadcompletevesselname($rows['vesselid']);
                             @$caption = $rows['caption']; 
                             @$description = $rows['description']; 
                             @$idsend = '"'. $rows['ID'] .'"'; 
                             @$idnumberexam = '"'. $numberofexam .'"'; 
                             @$idcaption = '"'. $rows['caption'] .'"'; 
                             @$iddescription = '"'. $rows['description'] .'"'; 
-                            @$titlesend = '"'. $rows['hiringtitle'] .'"'; 
+                            @$titlesend =  '"'. $hiringtitle .'"'; 
                             @$rank = '"'. $rows['positionid'] .'"'; 
                             echo "
                             <div class='col-md-6' style='margin-top: 10px;'> 
@@ -194,16 +194,18 @@ function loaddocumentlist($docttype_value)
                                 @$docnumber = $rows['docnumber']; 
                                 @$issuedate = $rows['issuedate']; 
                                 @$expirydate = $rows['expirydate']; 
-
+                                @$classheader = "";
                                 if($authenticity=="")
                                 {
                                     if($docfile==NULL||$docfile=="")
                                     {
                                         $authenticity = "For Upload";
+                                        $classheader = "bg-pending text-dark";
                                     }
                                     else 
                                     {
                                         $authenticity = "Not Verified";
+                                        $classheader = "bg-primary text-light";
                                     }
                                   
                                 }
@@ -211,7 +213,7 @@ function loaddocumentlist($docttype_value)
 
                                 echo "<div class='col-md-4' style='margin-top:10px;'>"; 
                                         echo "<div class='card border border-primary'>";                        
-                                                echo "<div class='card-header text-light bg-primary'>";
+                                                echo "<div class='card-header  $classheader'>";
                                                         echo $documentname;
                                                         echo "<div class='float-right'>";
                                                     //     echo "<button type='button' class='btn btn-sm btn-secondary'><i class='bi bi-eye'></i></button>";
@@ -571,13 +573,12 @@ function loadmydocuments()
 function loadmydocumentsbyhiring($hiringid)
 {
     include "dbconfig.php"; 
-    require 'modules.php'; 
-    
+
     @$myusername = $_COOKIE['usname']; 
     @$docid = ""; 
     $id = $hiringid;
     @$mydocidlist = loadhiringdocid($id); 
-
+    @$show = false; 
 
     $sqldoc = "Select * from `reqlist` Where `reqid` Like '$mydocidlist'"; 
     $dat = mysqli_query($sqlcon,$sqldoc); 
@@ -586,7 +587,7 @@ function loadmydocumentsbyhiring($hiringid)
     {
         if(mysqli_num_rows($dat)!=0)
         {
-            echo mysqli_num_rows($dat);
+          
             while($rows2 = mysqli_fetch_assoc($dat))
             {
                 $docid = $rows2['doclistid']; 
@@ -598,128 +599,29 @@ function loadmydocumentsbyhiring($hiringid)
             
                 if(!mysqli_error($sqlcon))
                 {
-                    if(mysqli_num_rows($dbt)!=0)
+                  //  echo $mysql . "</br>" ;
+                    if(mysqli_num_rows($dbt)==0)
                     {
-                        while($rows = mysqli_fetch_assoc($dbt))
-                        {
-                            @$docidme = $rows['docid']; 
-            
-                            @$mydocname = loaddocname($rows['docid']); 
-                            @$authenticity = $rows['authenticity']; 
-                            @$docfile = $rows['filename']; 
-                            @$docfilelink = "../userdocuments/uploads/". $myusername . "/" . $docfile; 
-                            @$docshow = '"'. $docfilelink . '"'; 
-                            @$delid = '"'. $rows['ID']  .'"'; 
-                            @$doctheid = '"'. $rows['docid']  .'"'; 
-                            @$delname = '"'.  $mydocname  .'"'; 
-                            @$dochiringid = '"'. $id  .'"'; 
-
-                            $getforadmin = loadtextreturn("requirement","foradmin","Where ID Like '$docidme'"); 
-                            
-                            if($getforadmin==NULL||$getforadmin=="")
-                            {
-                                if($authenticity=="")
-                                {
-                                    if($docfile==NULL||$docfile=="")
-                                    {
-                                        $authenticity = "For Upload";
-                                    }
-                                    else 
-                                    {
-                                        $authenticity = "Not Verified";
-                                    }
-                                  
-                                }
-                                echo "<tr>"; 
-                                echo "<td scope='row'>Required</td>"; 
-                                echo "<td scope='row'>$mydocname</td>"; 
-                                echo "<td>$authenticity</td>";
-                                echo "<td>"; 
-                                
-                                if($docfile==NULL||$docfile=="")
-                                {
-                                    echo
-                                    "<button type='button' class='btn btn-primary' style='margin-left: 10px;' onclick='uploadshowupdate($doctheid,$delname,$dochiringid)' ><i class='bi bi-cloud-arrow-up'></i></button>";
-                                 //   "<button type='button' class='btn btn-danger' style='margin-left:10px;' onclick='deletelist($delid,$delname,$dochiringid)'><i class='bi bi-trash'></i></button>";
-                                }
-                                else 
-                                {
-                                    echo
-                                    "<button type='button' class='btn btn-primary' style='margin-left: 10px;' onclick='uploadshowupdate($doctheid,$delname,$dochiringid)' ><i class='bi bi-cloud-arrow-up'></i></button>".
-                                    "<button type='button' class='btn btn-danger' style='margin-left:10px;' onclick='deletelist($delid,$delname,$dochiringid)'><i class='bi bi-trash'></i></button>". 
-                                    "<button type='button' class='btn btn-info' style='margin-left: 10px;' onclick='popupwindow($docshow)'><i class='bi bi-eye'></i></button>".
-                                    "<button type='button' class='btn btn-secondary' style='margin-left: 10px;'><a href='$docfilelink' download><i class='bi bi-download'></i></a></button>"; 
-                                   
-                                }
-                            
-                                echo "</td>"; 
-                                echo "</tr>"; 
-                            }
-                        
-            
-                        }
-                    }
-                    else 
-                    {
-                        @$docidme = $docid;
-            
-                        @$mydocname = loaddocname($docid); 
-                        @$authenticity = ""; 
-                        @$docfile = ""; 
-                        // @$docfilelink = "../userdocuments/uploads/". $myusername . "/" . $docfile; 
-                        // @$docshow = '"'. $docfilelink . '"'; 
-                        // @$delid = '"'. $rows['ID']  .'"'; 
-                         @$doctheid = '"'. $docid  .'"'; 
-                         @$dochiringid = '"'. $id  .'"'; 
-                         @$delname = '"'.  $mydocname  .'"'; 
-        
-                        // $getforadmin = loadtextreturn("requirement","foradmin","Where ID Like '$docidme'"); 
-                        
-                        // if($getforadmin==NULL||$getforadmin=="")
-                        // {
-                            if($authenticity=="")
-                            {
-                                if($docfile==NULL||$docfile=="")
-                                {
-                                    $authenticity = "For Upload";
-                                }
-                                else 
-                                {
-                                    $authenticity = "Not Verified";
-                                }
-                              
-                            }
-                            echo "<tr>"; 
-                            echo "<td scope='row'>Required</td>"; 
-                            echo "<td scope='row'>$mydocname</td>"; 
-                            echo "<td>$authenticity</td>";
-                            echo "<td>"; 
-                            
-                            // if($docfile==NULL||$docfile=="")
-                            // {
-                            //            }
-                            // else 
-                            // {
-                            //     echo
-                            //     "<button type='button' class='btn btn-primary' style='margin-left: 10px;' onclick='uploadshowupdate($doctheid,$delname)' ><i class='bi bi-cloud-arrow-up'></i></button>".
-                            //     "<button type='button' class='btn btn-danger' style='margin-left:10px;' onclick='deletelist($delid,$delname)'><i class='bi bi-trash'></i></button>". 
-                            //     "<button type='button' class='btn btn-info' style='margin-left: 10px;' onclick='popupwindow($docshow)'><i class='bi bi-eye'></i></button>".
-                            //     "<button type='button' class='btn btn-secondary' style='margin-left: 10px;'><a href='$docfilelink' download><i class='bi bi-download'></i></a></button>"; 
-                               
-                            // }
-
-                            echo
-                            "<button type='button' class='btn btn-primary' style='margin-left: 10px;' onclick='uploadshowupdate($doctheid,$delname,$dochiringid)' ><i class='bi bi-cloud-arrow-up'></i></button>"; 
-                           // "<button type='button' class='btn btn-danger' style='margin-left:10px;' onclick='deletelist($delid,$delname)'><i class='bi bi-trash'></i></button>";
-             
-
-                        
-                            echo "</td>"; 
-                            echo "</tr>"; 
-                        
-                    
+                        @$documentname =  loaddocname($rows2['doclistid']); 
+                        @$doctheid = '"'. $rows2['doclistid'] .'"'; 
+                        @$delname = '"'.  $documentname .'"'; 
+                        @$docusername = '"'. $_COOKIE['usname'] .'"'; 
+                        echo "<div class='col-md-4' style='margin-top:10px;'>"; 
+                        echo "<div class='card border border-primary'>";                        
+                                echo "<div class='card-header text-dark bg-pending'>";
+                                        echo "Pending: " . $documentname;
+                           
+                                echo "</div>";
+                                echo "<div class='card-body'>";
+                                    echo "  <p class='card-title text-dark'>Upload Document first</p>";
+                                    echo "<button type='button' class='btn btn-primary btn-sm' style='margin-left: 10px;' onclick='uploadshowupdate($doctheid,$delname,$docusername)' >Upload</button>";
+                                         
+                                echo "</div>";
+                        echo "</div>";
+                        echo "  </div>"; 
         
                     }
+
             
                 }
                 else 

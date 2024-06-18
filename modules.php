@@ -216,6 +216,15 @@ function loadcompleterank($myrank)
 
 }
 
+function loadcompletevesselname($vesselname)
+{
+	@$vessel = $vesselname; 
+
+	$convrank = loadtextreturn("vessel","vesselname","Where `ID` Like '". $vessel ."'"); 
+	return $convrank; 
+
+}
+
 function loadquizshort($id)
 {
 

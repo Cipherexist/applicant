@@ -42,7 +42,7 @@ if(!empty($_FILES["file"]))
                     if(!mysqli_error($sqlcon))
                     {
                        // echo $mysql2; 
-                        loaduserdocumentsall($usernamecall,$content);
+                        //loaduserdocumentsall($usernamecall,$content);
         
                     }
                     else
@@ -64,7 +64,7 @@ if(!empty($_FILES["file"]))
                     if(!mysqli_error($sqlcon))
                     {
                         //echo $mysql2; 
-                       loaduserdocumentsall($usernamecall,$content);
+                     //  loaduserdocumentsall($usernamecall,$content);
         
                     }
                     else
