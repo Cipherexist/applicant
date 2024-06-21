@@ -42,7 +42,19 @@ if(!empty($_FILES["file"]))
                     if(!mysqli_error($sqlcon))
                     {
                        // echo $mysql2; 
-                       loaddocumentlist($content);
+                       if($content=="training")
+                       {
+                        loaddocumentlistfortraining($content);
+                       }
+                       else if($content=="foreign") 
+                       {
+                        loaddocumentlistforforeign($content);
+                       }
+                       else 
+                       {
+                        loaddocumentlist($content);
+                       }
+                 
         
                     }
                     else
@@ -64,7 +76,18 @@ if(!empty($_FILES["file"]))
                     if(!mysqli_error($sqlcon))
                     {
                         //echo $mysql2; 
-                        loaddocumentlist($content);
+                        if($content=="training")
+                        {
+                         loaddocumentlistfortraining($content);
+                        }
+                        else if($content=="foreign") 
+                        {
+                         loaddocumentlistforforeign($content);
+                        }
+                        else 
+                        {
+                         loaddocumentlist($content);
+                        }
         
                     }
                     else

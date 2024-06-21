@@ -282,24 +282,32 @@
 <div class="row">
           <ul class="nav nav-tabs">
                 <li class="nav-item">
-                  <a class="nav-link" href="home.php">Personal Details</a>
+                  <a class="nav-link" href="home.php">Personal</a>
                 </li>
                
                 <li class="nav-item">
-                  <a class="nav-link " aria-current="page" href="education.php">Educational attainment</a>
+                  <a class="nav-link " aria-current="page" href="education.php">Education</a>
                 </li>
 
                 <li class="nav-item">
-                  <a class="nav-link active" href="family.php">Family details</a>
+                  <a class="nav-link active" href="family.php">Family</a>
                 </li>  
-
-                            
+                       
                 <li class="nav-item">
-                  <a class="nav-link <?php if(isset($_GET['content'])&&$_GET['content']=='national'){echo 'active';}?>" href="my_documents.php?content=national">National Document</a>
+                  <a class="nav-link <?php if(isset($_GET['content'])&&$_GET['content']=='national'){echo 'active';}?>" href="my_documents.php?content=national">National</a>
                 </li> 
 
                 <li class="nav-item">
-                  <a class="nav-link <?php if(isset($_GET['content'])&&$_GET['content']=='marina'){echo 'active';}?>" href="my_documents.php?content=marina">Marina Document</a>
+                  <a class="nav-link <?php if(isset($_GET['content'])&&$_GET['content']=='marina'){echo 'active';}?>" href="my_documents.php?content=marina">Marina</a>
+                </li> 
+                <li class="nav-item">
+                  <a class="nav-link <?php if(isset($_GET['content'])&&$_GET['content']=='training'){echo 'active';}?>" href="my_documents.php?content=training">Training</a>
+                </li> 
+                <li class="nav-item">
+                  <a class="nav-link <?php if(isset($_GET['content'])&&$_GET['content']=='medical'){echo 'active';}?>" href="my_documents.php?content=medical">Medical</a>
+                </li> 
+                <li class="nav-item">
+                  <a class="nav-link <?php if(isset($_GET['content'])&&$_GET['content']=='foreign'){echo 'active';}?>" href="my_documents.php?content=foreign">Foreign</a>
                 </li> 
 
                 <li class="nav-item">

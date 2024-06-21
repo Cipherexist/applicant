@@ -1,7 +1,7 @@
 <?php 
 include "dbconfig.php"; 
 require "loadtables.php"; 
-
+include 'modules.php'; 
 @$id = $_POST['id']; 
 @$hiringid = $_POST['thehiring']; 
 
@@ -23,7 +23,26 @@ if(!mysqli_error($sqlcon))
         {
             if(!mysqli_error($sqlcon)) 
             {
-                loaddocumentlist("all");
+                if(isset($_POST['mycontent']))
+                {
+                    if($_POST['mycontent']=='training')
+                    {
+                        loaddocumentlistfortraining($_POST['mycontent']);
+                    }
+                    else if($_POST['mycontent']=='training')
+                    {
+                        loaddocumentlistforforeign($_POST['mycontent']);
+                    }
+                    else 
+                    {
+                        loaddocumentlist($_POST['mycontent']);
+                    }
+                }
+                else 
+                {
+                    loaddocumentlist("all");
+                }
+             
             }
     
         }

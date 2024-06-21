@@ -7,12 +7,69 @@ if(isset($_POST['id']))
 
   @$id = $_POST['id']; 
   @$docnumber = $_POST['docnumber']; 
-  @$issuedate = $_POST['issuedate']; 
-  @$expirydate = $_POST['expirydate']; 
+  if(isset($_POST['issuedate']))
+  {
+    @$issuedate = $_POST['issuedate']; 
+  }
+  else 
+  {
+    @$issuedate = ""; 
+  }
+
+  if(isset($_POST['expirydate']))
+  {
+    @$expirydate = $_POST['expirydate']; 
+  }
+  else 
+  {
+    @$expirydate = ""; 
+  }
+
+  if(isset($_POST['datestart']))
+  {
+    @$datestart = $_POST['datestart']; 
+  }
+  else 
+  {
+    @$datestart = ""; 
+  }
+
+  if(isset($_POST['dateend']))
+  {
+    @$dateend = $_POST['dateend']; 
+  }
+  else 
+  {
+    @$dateend = ""; 
+  }
+
+  
+  if(isset($_POST['trainingcenter']))
+  {
+    @$trainingcenter = $_POST['trainingcenter']; 
+  }
+  else 
+  {
+    @$trainingcenter = ""; 
+  }
+
+  if(isset($_POST['country']))
+  {
+    @$country = $_POST['country']; 
+  }
+  else 
+  {
+    @$country = ""; 
+  }
+
+
+
+
+
   @$username = $_COOKIE['usname']; 
   @$regdate = loadregistrationdatetoday(); 
 
-  @$sqlme = "UPDATE `userdocuments` SET `docnumber`='$docnumber', `issuedate`='$issuedate', `expirydate`='$expirydate', `user_update`='$username', `docdate`='$regdate' Where `ID` Like '$id'";
+  @$sqlme = "UPDATE `userdocuments` SET `docnumber`='$docnumber', `issuedate`='$issuedate', `expirydate`='$expirydate', `user_update`='$username', `docdate`='$regdate',`datestart`='$datestart',`dateend`='$dateend',`trainingcenter`='$trainingcenter',`country`='$country' Where `ID` Like '$id'";
 
   mysqli_query($sqlcon, $sqlme); 
 

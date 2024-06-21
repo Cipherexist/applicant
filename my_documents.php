@@ -127,7 +127,86 @@
         function saveupdate()
         {
           var idall = document.getElementById("editid").value 
-          $.post("my_documents_edit.php",
+          var contenttype = $("#contentupload").val()
+          if(contenttype=='training')
+          {
+            $.post("my_documents_edit.php",
+              {
+                id: idall, 
+                docnumber: $("#docunumber").val().trim(), 
+                trainingcenter: $("#trainingcenter").val(), 
+                datestart: $("#datestart").val(), 
+                dateend: $("#dateend").val()
+              },function(result)
+              {
+                if(result==1)
+                {
+                $("#modaledit").modal("hide");
+                document.getElementById("docnumber_" + idall).textContent = $("#docunumber").val()
+                document.getElementById("trainingcenter_" + idall).textContent = $("#trainingcenter").val()
+                document.getElementById("datestart_" + idall).textContent = $("#datestart").val()
+                document.getElementById("dateend_" + idall).textContent = $("#dateend").val() 
+
+                var ifexpired = false; 
+
+                  ifexpired = getexpiration($("#expirydate").val())
+
+                  if(ifexpired)
+                  {
+                    document.getElementById("expirydate_" + idall).className  = "text-danger";  
+                  }
+                  else 
+                  {
+                    document.getElementById("expirydate_" + idall).className  = "text-dark";  
+                  }
+                }
+                else 
+                {
+                  console.log(result)
+                } 
+            })
+          }
+          else if(contenttype=='foreign')
+          {
+            $.post("my_documents_edit.php",
+              {
+                id: idall, 
+                docnumber: $("#docunumber").val().trim(), 
+                country: $("#country").val(), 
+                issuedate: $("#issuedate").val(), 
+                expirydate: $("#expirydate").val()
+              },function(result)
+              {
+                if(result==1)
+                {
+                $("#modaledit").modal("hide");
+                document.getElementById("docnumber_" + idall).textContent = $("#docunumber").val()
+                document.getElementById("country_" + idall).textContent = $("#country").val()
+                document.getElementById("issuedate_" + idall).textContent = $("#issuedate").val()
+                document.getElementById("expirydate_" + idall).textContent = $("#expirydate").val() 
+
+                var ifexpired = false; 
+
+                  ifexpired = getexpiration($("#expirydate").val())
+
+                  if(ifexpired)
+                  {
+                    document.getElementById("expirydate_" + idall).className  = "text-danger";  
+                  }
+                  else 
+                  {
+                    document.getElementById("expirydate_" + idall).className  = "text-dark";  
+                  }
+                }
+                else 
+                {
+                  console.log(result)
+                }
+            })
+          }
+          else 
+          {
+            $.post("my_documents_edit.php",
           {
             id: idall, 
             docnumber: $("#docunumber").val().trim(), 
@@ -165,6 +244,7 @@
               console.log(result)
             }
           })
+          }
         }
 
 
@@ -180,6 +260,7 @@
           $("#loading").show()
 
           var theid = $('#editid').val();
+          var content = $('#contentupload').val();
           Swal.fire({
               title: 'Do you want to Delete this List?: ' + delname,
               showDenyButton: true,
@@ -194,7 +275,8 @@
               {
                 $.post("uploads_delete.php",{
                   id: delid, 
-                  thehiring: hiringid
+                  thehiring: hiringid,
+                  mycontent: content
                 },function(result){
                 $("#loading").hide()
                //  alert(result); 
@@ -271,51 +353,59 @@
         
         function editshow(id,idname)
         {
-  
-
+            $("#showissuedate").hide();
+            $("#showtrainingcert").hide(); 
+            $("#showforeign").hide();
+            var doc_content =  $("#contentupload").val();
+          var contenttype = $("#contentupload").val()
+          if(contenttype == "training")
+          {
+            $("#showtrainingcert").show()
           var docnumber  = document.getElementById("docnumber_" + id).textContent.trim();
+          var trainingcenter  = document.getElementById("trainingcenter_" + id).textContent.trim();
+          var issuedate = document.getElementById("datestart_" + id).textContent.trim(); 
+          var expirtydate = document.getElementById("dateend_" + id).textContent.trim(); 
+
+         // console.log("training cert");
+          document.getElementById("editid").value = id; 
+          document.getElementById("modal-title").textContent = "Edit: " + idname;
+          document.getElementById("docunumber").value = docnumber
+          document.getElementById("trainingcenter").value = trainingcenter
+          document.getElementById("datestart").value = issuedate
+          document.getElementById("dateend").value = expirtydate
+          }
+          else if(contenttype == "foreign")
+          {
+            $("#showforeign").show()
+          console.log("foreign");
+          var docnumber  = document.getElementById("docnumber_" + id).textContent.trim();
+          var country  = document.getElementById("country_" + id).textContent.trim();
           var issuedate = document.getElementById("issuedate_" + id).textContent.trim(); 
-          var expirydate = document.getElementById("expirydate_" + id).textContent.trim(); 
+          var expirtydate = document.getElementById("expirydate_" + id).textContent.trim(); 
 
-
-          var issuevalue = issuedate.replace("///g","-"); 
-          var expiryvalue = expirydate.replace("///g","-"); 
+       
+          document.getElementById("editid").value = id; 
+          document.getElementById("modal-title").textContent = "Edit: " + idname;
+          document.getElementById("docunumber").value = docnumber
+          document.getElementById("country").value = country
+          document.getElementById("issuedate").value = issuedate
+          document.getElementById("expirydate").value = expirtydate
+          }
+          else 
+          {
+            $("#showissuedate").show();
+            var docnumber  = document.getElementById("docnumber_" + id).textContent.trim();
+          var issuedate = document.getElementById("issuedate_" + id).textContent.trim(); 
+          var expirtydate = document.getElementById("expirydate_" + id).textContent.trim(); 
 
           document.getElementById("editid").value = id; 
           document.getElementById("modal-title").textContent = "Edit: " + idname;
           document.getElementById("docunumber").value = docnumber
-          document.getElementById("issuedate").value = issuevalue
-          document.getElementById("expirydate").value = expiryvalue
-
-          if(issuedate!="")
-          {
-            $('#issuedate').daterangepicker({
-                "singleDatePicker": true,
-                 "showDropdowns": true,
-                "startDate": issuevalue,
-                locale: { 
-                  format: 'DD/MM/YYYY'
-                 },
-            });
+          document.getElementById("issuedate").value = issuedate
+          document.getElementById("expirydate").value = expirtydate
           }
-       
-          if(expirydate!="")
-          {
-            $('#expirydate').daterangepicker({
-                "singleDatePicker": true,
-                 "showDropdowns": true,
-                "startDate": expiryvalue,
-                locale: { 
-                  format: 'DD/MM/YYYY'
-                 },
-            });
-
-          }
-         
-
-
-          $("#modaledit").modal("show");
-
+    
+           $("#modaledit").modal("show");
         }
 
             function uploadsend() {
@@ -387,25 +477,69 @@
                           <span aria-hidden="true">&times;</span>
                         </button>
                     </div>
-                    <div class="modal-body">
+              <div class="modal-body">
                       
-                      <div class="form-group">
-                        <label for="docunumber">Certificate / Document No</label>
-                        <input type="text"
-                          class="form-control"  id="docunumber" aria-describedby="helpId" placeholder="">
-                      </div>
+                    <div class="form-group">
+                <label for="docunumber">Certificate / Document No</label>
+                <input type="text"
+                  class="form-control"  id="docunumber" aria-describedby="helpId" placeholder="">
+              </div>
 
-                      <div class="form-group">
-                        <label for="issuedate">Issue Date (DD/MM/YYYY)</label>
-                        <input type="text"
-                          class="form-control" id="issuedate" aria-describedby="helpId" placeholder="">
-                      </div>
-                      
-                      <div class="form-group">
-                        <label for="expirydate">Expiry Date   (DD/MM/YYYY)</label>
-                        <input type="text"
-                          class="form-control" id="expirydate" aria-describedby="helpId" placeholder="">
-                      </div>
+              <div id="showissuedate">
+                    <div class="form-group">
+                      <label for="issuedate">Issue Date (DD/MM/YYYY)</label>
+                      <input type="text"
+                        class="form-control" id="issuedate" aria-describedby="helpId" placeholder="">
+                    </div>
+                    
+                    <div class="form-group">
+                      <label for="expirydate">Expiry Date   (DD/MM/YYYY)</label>
+                      <input type="text"
+                        class="form-control" id="expirydate" aria-describedby="helpId" placeholder="">
+                    </div>
+              </div>
+
+              <div id="showtrainingcert">
+                    <div class="form-group">
+                      <label for="trainingcenter">Training Center</label>
+                      <input type="text"
+                        class="form-control" id="trainingcenter" aria-describedby="helpId" placeholder="">
+                    </div>
+                    
+                    <div class="form-group">
+                      <label for="datestart">Date Start (DD/MM/YYYY)</label>
+                      <input type="text"
+                        class="form-control" id="datestart" aria-describedby="helpId" placeholder="">
+                    </div>
+                    
+                    <div class="form-group">
+                      <label for="dateend">Date End (DD/MM/YYYY)</label>
+                      <input type="text"
+                        class="form-control" id="dateend" aria-describedby="helpId" placeholder="">
+                    </div>
+              </div>
+
+              <div id="showforeign">
+                    <div class="form-group">
+                      <label for="country">Country</label>
+                      <input type="text"
+                        class="form-control" id="country" aria-describedby="helpId" placeholder="">
+                    </div>
+                    
+                    <div class="form-group">
+                      <label for="issuedate">Issue Date (DD/MM/YYYY)</label>
+                      <input type="text"
+                        class="form-control" id="issuedate" aria-describedby="helpId" placeholder="">
+                    </div>
+                    
+                    <div class="form-group">
+                      <label for="expirydate">Expiry Date   (DD/MM/YYYY)</label>
+                      <input type="text"
+                        class="form-control" id="expirydate" aria-describedby="helpId" placeholder="">
+                    </div>
+              </div>
+
+          
 
                     </div>
                     <div class="modal-footer">
@@ -414,7 +548,7 @@
                     </div>
                   </div>
                 </div>
-              </div>
+        </div>
 
 
         <!-- START OF MODAL -->
@@ -518,24 +652,33 @@
 <div class="row">
           <ul class="nav nav-tabs">
                 <li class="nav-item">
-                  <a class="nav-link" href="home.php">Personal Details</a>
+                  <a class="nav-link" href="home.php">Personal</a>
                 </li>
                
                 <li class="nav-item">
-                  <a class="nav-link " aria-current="page" href="education.php">Educational attainment</a>
+                  <a class="nav-link " aria-current="page" href="education.php">Education</a>
                 </li>
 
                 <li class="nav-item">
-                  <a class="nav-link " href="family.php">Family details</a>
+                  <a class="nav-link " href="family.php">Family</a>
                 </li>  
 
                             
                 <li class="nav-item">
-                  <a class="nav-link <?php if(isset($_GET['content'])&&$_GET['content']=='national'){echo 'active';}?>" href="my_documents.php?content=national">National Document</a>
+                  <a class="nav-link <?php if(isset($_GET['content'])&&$_GET['content']=='national'){echo 'active';}?>" href="my_documents.php?content=national">National</a>
                 </li> 
 
                 <li class="nav-item">
-                  <a class="nav-link <?php if(isset($_GET['content'])&&$_GET['content']=='marina'){echo 'active';}?>" href="my_documents.php?content=marina">Marina Document</a>
+                  <a class="nav-link <?php if(isset($_GET['content'])&&$_GET['content']=='marina'){echo 'active';}?>" href="my_documents.php?content=marina">Marina</a>
+                </li> 
+                <li class="nav-item">
+                  <a class="nav-link <?php if(isset($_GET['content'])&&$_GET['content']=='training'){echo 'active';}?>" href="my_documents.php?content=training">Training</a>
+                </li> 
+                <li class="nav-item">
+                  <a class="nav-link <?php if(isset($_GET['content'])&&$_GET['content']=='medical'){echo 'active';}?>" href="my_documents.php?content=medical">Medical</a>
+                </li> 
+                <li class="nav-item">
+                  <a class="nav-link <?php if(isset($_GET['content'])&&$_GET['content']=='foreign'){echo 'active';}?>" href="my_documents.php?content=foreign">Foreign</a>
                 </li> 
 
                 <li class="nav-item">
@@ -566,8 +709,18 @@ h6
       <?php 
         if(isset($_GET['content']))
         {
-            loaddocumentlist($_GET['content']);
-
+            if($_GET['content']=='training')
+            {
+              loaddocumentlistfortraining($_GET['content']);
+            }
+            else if($_GET['content']=='foreign')
+            {
+              loaddocumentlistforforeign($_GET['content']); 
+            }
+            else
+            {
+              loaddocumentlist($_GET['content']);
+            }
         }
       ?> 
 
@@ -631,6 +784,28 @@ h6
             });
 
             document.getElementById("expirydate").value = "01-01-2000";
+
+            $('#datestart').daterangepicker({
+                "singleDatePicker": true,
+                 "showDropdowns": true,
+                "startDate": '01-01-2000',
+                locale: { 
+                  format: 'DD/MM/YYYY'
+                 },
+            });
+
+            document.getElementById("datestart").value = "01-01-2000";
+
+            $('#dateend').daterangepicker({
+                "singleDatePicker": true,
+                 "showDropdowns": true,
+                "startDate": '01-01-2000',
+                locale: { 
+                  format: 'DD/MM/YYYY'
+                 },
+            });
+
+            document.getElementById("dateend").value = "01-01-2000";
           
      
 
