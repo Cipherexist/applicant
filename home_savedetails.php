@@ -25,7 +25,8 @@ include "loadprogress.php";
 @$rankapplied = $_POST['myrankapplied']; 
 @$address = $_POST['myaddress']; 
 @$currentaddress = $_POST['mycurrentaddress']; 
-
+@$height = $_POST['myheight']; 
+@$weight = $_POST['myweight']; 
 @$myusername = $_COOKIE['usname']; 
 
 
@@ -54,7 +55,8 @@ emailadd
 $sql = "UPDATE `applicantinfo` SET `firstname`='$firstname',`middlename`='$middlename',`lastname`='$lastname',". 
 "`birthdate`='$birthdate',`birthplace`='$placeofbirth',`age`='$age',`nationality`='$nationality',". 
 "`citizenship`='$citizenship',`religion`='$religion',`address`='$address',`currentaddress`='$currentaddress',`gender`='$gender',`haircolor`='$haircolor',`eyecolor`='$eyecolor',". 
-"`sss`='$sss',`philhealth`='$philhealth',`tin`='$tin',`pagibig`='$pagibig',`contactnumber`='$mobilenumber',`currentrank`='$rank',`email`='$emailadd',`applyingrank`='$rankapplied'". 
+"`sss`='$sss',`philhealth`='$philhealth',`tin`='$tin',`pagibig`='$pagibig',`contactnumber`='$mobilenumber',`currentrank`='$rank',`email`='$emailadd',`applyingrank`='$rankapplied',".
+"`height`='$height',`weight`='$weight' ". 
 "Where username Like '$myusername'"; 
 
 mysqli_query($sqlcon,$sql); 

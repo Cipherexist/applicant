@@ -224,7 +224,9 @@
                 mymobilenumber: $("#mobilenumber").val(),  
                 myrank: $("#rank").val(),  
                 myrankapplied: $("#rank_applied").val(),  
-                myemailadd: $("#emailadd").val()
+                myemailadd: $("#emailadd").val(),
+                myheight: $("#height").val(),
+                myweight: $("#weight").val()
               },function(result)
               {
                 const date = new Date();
@@ -665,6 +667,22 @@ box-shadow: rgba(255,255,255, 0.75) 1.5em 0 0 0, rgba(255,255,255, 0.75) 1.1em 1
                                     ?>">
                             </div>
                   </div>  
+        </div>
+
+        <div class="row">
+             <div class="col-md-6">
+                    <div class="form-group"> 
+                              <label for="height" class="form-label">Height (CM)</label>
+                              <input type="number" name="height" id="height" class="form-control" placeholder="" value="<?php echo $rows['height']; ?>">
+                    </div>
+              </div>
+              <div class="col-md-6">
+                        <div class="form-group"> 
+                                        <label for="weight" class="form-label">Weight (KG)</label>
+                                        <input type="number" name="weight" id="weight" class="form-control" placeholder="" value="<?php echo $rows['weight']; ?>">
+                        </div>
+              </div>
+
         </div>
 
         <div class="row">

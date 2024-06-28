@@ -649,6 +649,20 @@ box-shadow: rgba(255,255,255, 0.75) 1.5em 0 0 0, rgba(255,255,255, 0.75) 1.1em 1
                   </div>  
         </div>
 
+
+        <div class="row">
+             <div class="col-md-12">
+                    <div class="form-group"> 
+                              <label for="height" class="form-label">Height</label>
+                              <input type="number" name="height" id="height" class="form-control" placeholder="" value="<?php echo $rows['height']; ?>">
+                    </div>
+                    <div class="form-group"> 
+                              <label for="height" class="form-label">Weight</label>
+                              <input type="number" name="weight" id="weight" class="form-control" placeholder="" value="<?php echo $rows['weight']; ?>">
+                    </div>
+              </div>
+        </div>
+
         <div class="row">
              <div class="col-md-12">
                     <div class="form-group"> 
