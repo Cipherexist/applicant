@@ -160,13 +160,25 @@ function uploadshow()
           }
           else if(contenttype=='Foreign')
           {
+            let expiryvalue = ""; 
+
+            if( $("#unlimitedcmb").is(" :checked"))
+            {
+              expiryvalue = "Unlimited"
+            }
+            else 
+            {
+              expiryvalue =  $("#expirydate").val() 
+            }
+
+
             $.post("my_documents_edit.php",
               {
                 id: idall, 
                 docnumber: $("#docunumber").val().trim(), 
                 country: $("#country").val(), 
                 issuedate: $("#issuedate").val(), 
-                expirydate: $("#expirydate").val()
+                expirydate: expiryvalue
               },function(result)
               {
                 if(result==1)
@@ -175,11 +187,15 @@ function uploadshow()
                 document.getElementById("docnumber_" + idall).textContent = $("#docunumber").val()
                 document.getElementById("country_" + idall).textContent = $("#country").val()
                 document.getElementById("issuedate_" + idall).textContent = $("#issuedate").val()
-                document.getElementById("expirydate_" + idall).textContent = $("#expirydate").val() 
+                document.getElementById("expirydate_" + idall).textContent =expiryvalue
 
-                var ifexpired = false; 
+                    var ifexpired = false; 
 
-                  ifexpired = getexpiration($("#expirydate").val())
+                   if(expiryvalue!="Unlimited")
+                  {
+                    ifexpired = getexpiration($("#expirydate").val())
+                  }
+
 
                   if(ifexpired)
                   {
@@ -198,39 +214,53 @@ function uploadshow()
           }
           else 
           {
-            $.post("my_documents_edit.php",
-          {
-            id: idall, 
-            docnumber: $("#docunumber").val().trim(), 
-            issuedate: $("#issuedate").val(), 
-            expirydate: $("#expirydate").val()
-          },function(result)
-          {
-            if(result==1)
-            {
-            $("#modaledit").modal("hide");
-            document.getElementById("docnumber_" + idall).textContent = $("#docunumber").val()
-            document.getElementById("issuedate_" + idall).textContent = $("#issuedate").val()
-            document.getElementById("expirydate_" + idall).textContent = $("#expirydate").val() 
+                let expiryvalue = ""; 
 
-            var ifexpired = false; 
+                if( $("#unlimitedcmb").is(" :checked"))
+                {
+                  expiryvalue = "Unlimited"
+                }
+                else 
+                {
+                  expiryvalue =  $("#expirydate").val() 
+                }
 
-              ifexpired = getexpiration($("#expirydate").val())
+                $.post("my_documents_edit.php",
+                {
+                  id: idall, 
+                  docnumber: $("#docunumber").val().trim(), 
+                  issuedate: $("#issuedate").val(), 
+                  expirydate: expiryvalue
+                },function(result)
+                {
+                  if(result==1)
+                  {
+                  $("#modaledit").modal("hide");
+                  document.getElementById("docnumber_" + idall).textContent = $("#docunumber").val()
+                  document.getElementById("issuedate_" + idall).textContent = $("#issuedate").val()
+                  document.getElementById("expirydate_" + idall).textContent = expiryvalue
 
-              if(ifexpired)
-              {
-                document.getElementById("expirydate_" + idall).className  = "text-danger";  
-              }
-              else 
-              {
-                document.getElementById("expirydate_" + idall).className  = "text-dark";  
-              }
-            }
-            else 
-            {
-              console.log(result)
-            }
-          })
+                  var ifexpired = false; 
+
+                    if(expiryvalue!="Unlimited")
+                    {
+                      ifexpired = getexpiration($("#expirydate").val())
+                    }
+
+                    if(ifexpired)
+                    {
+                      document.getElementById("expirydate_" + idall).className  = "text-danger";  
+                    }
+                    else 
+                    {
+                      document.getElementById("expirydate_" + idall).className  = "text-dark";  
+                    }
+                  }
+                  else 
+                  {
+                    console.log(result)
+                  }
+                })
           }
         }
 
@@ -716,6 +746,14 @@ box-shadow: rgba(255,255,255, 0.75) 1.5em 0 0 0, rgba(255,255,255, 0.75) 1.1em 1
                       <input type="text"
                         class="form-control" id="expirydate" aria-describedby="helpId" placeholder="">
                     </div>
+
+                    <div class="form-check">
+                      <label class="form-check-label">
+                        <input type="checkbox" class="form-check-input" name="" id="unlimitedcmb" value="">
+                        Set Expiration as Unlimited
+                      </label>
+                    </div>
+
               </div>
 
 

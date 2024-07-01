@@ -168,13 +168,24 @@
           }
           else if(contenttype=='foreign')
           {
+              let expiryvalue = ""; 
+
+              if( $("#unlimitedcmb").is(" :checked"))
+              {
+                expiryvalue = "Unlimited"
+              }
+              else 
+              {
+                expiryvalue =  $("#expirydate").val() 
+              }
+
             $.post("my_documents_edit.php",
               {
                 id: idall, 
                 docnumber: $("#docunumber").val().trim(), 
                 country: $("#country").val(), 
                 issuedate: $("#issuedate").val(), 
-                expirydate: $("#expirydate").val()
+                expirydate: expiryvalue
               },function(result)
               {
                 if(result==1)
@@ -183,11 +194,14 @@
                 document.getElementById("docnumber_" + idall).textContent = $("#docunumber").val()
                 document.getElementById("country_" + idall).textContent = $("#country").val()
                 document.getElementById("issuedate_" + idall).textContent = $("#issuedate").val()
-                document.getElementById("expirydate_" + idall).textContent = $("#expirydate").val() 
+                document.getElementById("expirydate_" + idall).textContent = expiryvalue
 
-                var ifexpired = false; 
+                  var ifexpired = false; 
 
-                  ifexpired = getexpiration($("#expirydate").val())
+                  if(expiryvalue!="Unlimited")
+                  {
+                    ifexpired = getexpiration($("#expirydate").val())
+                  }
 
                   if(ifexpired)
                   {
@@ -206,12 +220,25 @@
           }
           else 
           {
+
+            let expiryvalue = ""; 
+
+            if( $("#unlimitedcmb").is(" :checked"))
+            {
+              expiryvalue = "Unlimited"
+            }
+            else 
+            {
+              expiryvalue =  $("#expirydate").val() 
+            }
+
+
             $.post("my_documents_edit.php",
           {
             id: idall, 
             docnumber: $("#docunumber").val().trim(), 
             issuedate: $("#issuedate").val(), 
-            expirydate: $("#expirydate").val()
+            expirydate: expiryvalue
           },function(result)
           {
             if(result==1)
@@ -219,11 +246,14 @@
             $("#modaledit").modal("hide");
             document.getElementById("docnumber_" + idall).textContent = $("#docunumber").val()
             document.getElementById("issuedate_" + idall).textContent = $("#issuedate").val()
-            document.getElementById("expirydate_" + idall).textContent = $("#expirydate").val() 
+            document.getElementById("expirydate_" + idall).textContent = expiryvalue
 
             var ifexpired = false; 
 
-              ifexpired = getexpiration($("#expirydate").val())
+                 if(expiryvalue!="Unlimited")
+                  {
+                    ifexpired = getexpiration($("#expirydate").val())
+                  }
 
               if(ifexpired)
               {
@@ -377,6 +407,7 @@
           else if(contenttype == "foreign")
           {
             $("#showforeign").show()
+            $("#showissuedate").show();
           console.log("foreign");
           var docnumber  = document.getElementById("docnumber_" + id).textContent.trim();
           var country  = document.getElementById("country_" + id).textContent.trim();
@@ -485,19 +516,7 @@
                   class="form-control"  id="docunumber" aria-describedby="helpId" placeholder="">
               </div>
 
-              <div id="showissuedate">
-                    <div class="form-group">
-                      <label for="issuedate">Issue Date (DD/MM/YYYY)</label>
-                      <input type="text"
-                        class="form-control" id="issuedate" aria-describedby="helpId" placeholder="">
-                    </div>
-                    
-                    <div class="form-group">
-                      <label for="expirydate">Expiry Date   (DD/MM/YYYY)</label>
-                      <input type="text"
-                        class="form-control" id="expirydate" aria-describedby="helpId" placeholder="">
-                    </div>
-              </div>
+          
 
               <div id="showtrainingcert">
                     <div class="form-group">
@@ -525,7 +544,10 @@
                       <input type="text"
                         class="form-control" id="country" aria-describedby="helpId" placeholder="">
                     </div>
-                    
+
+              </div>
+
+              <div id="showissuedate">
                     <div class="form-group">
                       <label for="issuedate">Issue Date (DD/MM/YYYY)</label>
                       <input type="text"
@@ -537,7 +559,16 @@
                       <input type="text"
                         class="form-control" id="expirydate" aria-describedby="helpId" placeholder="">
                     </div>
+
+                    <div class="form-check">
+                      <label class="form-check-label">
+                        <input type="checkbox" class="form-check-input" name="" id="unlimitedcmb" value="">
+                        Set Expiration as Unlimited
+                      </label>
+                    </div>
+
               </div>
+
 
           
 

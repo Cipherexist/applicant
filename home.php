@@ -226,7 +226,8 @@
                 myrankapplied: $("#rank_applied").val(),  
                 myemailadd: $("#emailadd").val(),
                 myheight: $("#height").val(),
-                myweight: $("#weight").val()
+                myweight: $("#weight").val(), 
+                myfacebookaccount: $("#facebookaccount").val()
               },function(result)
               {
                 const date = new Date();
@@ -817,19 +818,27 @@ box-shadow: rgba(255,255,255, 0.75) 1.5em 0 0 0, rgba(255,255,255, 0.75) 1.1em 1
 
         
         <div class="row">
-                  <div class="col-md-6">
+                  <div class="col-md-4">
                                 <div class="form-group"> 
                                     <label for="mobilenumber" class="form-label">Contact Nos</label>
                                     <input type="number" name="mobilenumber" id="mobilenumber" class="form-control" placeholder="" value="<?php echo $rows['contactnumber']; ?>">
                             </div>
                   </div>
                   
-                  <div class="col-md-6">
+                  <div class="col-md-4">
                             <div class="form-group"> 
                                     <label for="emailadd" class="form-label">Email Address</label>
                                     <input type="email" name="emailadd" id="emailadd" class="form-control" placeholder="" value="<?php echo $rows['email']; ?>">
                             </div>
                   </div>
+
+                  <div class="col-md-4">
+                            <div class="form-group"> 
+                                    <label for="facebookaccount" class="form-label">Facebook Account/Link</label>
+                                    <input type="text" name="facebookaccount" id="facebookaccount" class="form-control" placeholder="" value="<?php echo $rows['facebookaccount']; ?>">
+                            </div>
+                  </div>
+
         </div>
 
         
