@@ -37,7 +37,7 @@ if(loadnumberofdataall("applicantinfo","Where `username` Like '$username'")==0)
         if (loadnumberofdataall("applicantinfo","Where `firstname` Like '$firstname' and `middlename` like '$middlename' and `lastname` Like '$lastname'")==0) 
         {
         
-            $sql2 = "INSERT INTO `applicantinfo` (`username`,`firstname`,`middlename`,`lastname`,`address`,`birthdate`,`suffix1`,`suffix2`,`birthplace`,`currentrank`,`contactnumber`,`gender`,`applyingrank`,`relation`,`cadet`,`experience`,`previouscompany`) VALUES ('$username','$firstname','$middlename','$lastname','$address','$birthdateno','$suffix1','$suffix2','$birthplace','$currentrank','$contactnumber','$gender','$appliedrank','$relation','$cadet','$experience','$previouscompany')";
+            $sql2 = "INSERT INTO `applicantinfo` (`username`,`firstname`,`middlename`,`lastname`,`address`,`birthdate`,`suffix1`,`suffix2`,`birthplace`,`currentrank`,`contactnumber`,`gender`,`applyingrank`,`relation`,`cadet`,`experience`,`previouscompany`,`status`) VALUES ('$username','$firstname','$middlename','$lastname','$address','$birthdateno','$suffix1','$suffix2','$birthplace','$currentrank','$contactnumber','$gender','$appliedrank','$relation','$cadet','$experience','$previouscompany','applicant')";
             mysqli_query($sqlcon,$sql2); 
 
             if(!mysqli_error($sqlcon))

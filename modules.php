@@ -1,5 +1,67 @@
 <?php 
 
+function getnoofitems()
+{
+	include 'dbconfig.php'; 
+	@$result = "";
+	@$myusername = $_COOKIE['usname']; 
+
+	@$sqlme = "SELECT * from `monitoring_quiz` Where `username` Like '$myusername' and active Like 'yes'";
+
+	@$dbt = mysqli_query($sqlcon,$sqlme); 
+
+	if(!mysqli_error($sqlcon))
+	{
+		if(mysqli_num_rows($dbt)!=0)
+		{
+			while($rows = mysqli_fetch_assoc($dbt))
+			{
+				$result = getfunctionitems($rows['functionid']);
+			}
+		}
+	}
+	else 
+	{
+		echo mysqli_error($sqlcon);
+	}
+
+	return $result; 
+
+}
+
+function getfunctionitems($functionid)
+{
+	@$result = "10";
+	include 'dbconfig.php'; 
+	@$id = $functionid;
+	@$sql = "SELECT * from `function` Where ID Like '$id'"; 
+
+	@$dbt = mysqli_query($sqlcon,$sql); 
+
+	if(!mysqli_error($sqlcon))
+	{
+		if(mysqli_num_rows($dbt)!=0)
+		{
+			while($rows = mysqli_fetch_assoc($dbt))
+			{
+				if($rows['questionpreview']!=NULL||$rows['questionpreview']!="")
+				{
+					$result = $rows['questionpreview']; 
+				}
+				else 
+				{
+					$result = "10";
+				}
+			}
+		}
+	}
+	else 
+	{
+		echo mysqli_error($sqlcon);
+	}
+
+	return $result; 
+}
 
 function quiznext($email,$hiring)
 {
@@ -876,6 +938,31 @@ function loadmysession($email,$hiring,$viewtype)
         {
             echo "SESSION: " . $query;
         }	
+}
+
+
+function checkifexist($email,$hiring,$viewtype)
+{
+		@$myemail = $email; 
+		@$myhiring = $hiring; 
+		@$myviewtype = $viewtype; 
+
+		include 'dbconfig.php'; 
+     	$query = "Select * from `onlineresults` Where username Like '$myemail' and `hiringid` Like '$myhiring' and `course` Like '$myviewtype'";
+		$datame = mysqli_query($sqlcon, $query);
+		
+		if(mysqli_num_rows($datame)!=0)
+		{
+		 @$totalitems = mysqli_num_rows($datame); 
+		 @$totalinquiz = getnoofitems(); 
+
+		 if($totalitems!=$totalinquiz)
+		 {
+			$sqldel = "DELETE from `onlineresults` Where username Like '$myemail' and `hiringid` Like '$myhiring' and `course` Like '$myviewtype'";
+			mysqli_query($sqlcon,$sqldel);
+		}
+
+		}
 }
 
 

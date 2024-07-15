@@ -50,10 +50,12 @@ if(checkstage2exambeforefinish($thehiring,$_COOKIE['usname'])=='End of Examinati
 @$thecompetence =  "1";
 
 @$sessionid = loadmysession($myusername,$thehiring,$theviewtype); 
-@$thetimer = loadmytimer($myusername,$thehiring,$theviewtype); 
+checkifexist($myusername,$thehiring,$theviewtype);
+//@$thetimer = loadmytimer($myusername,$thehiring,$theviewtype); 
 @$mycompetence = "1";
-@$theqn = "10";
-
+@$noofitems = getnoofitems();
+@$theqn = $noofitems;
+@$thetimer = "$noofitems:00";
 
 
 
@@ -815,7 +817,7 @@ function resetbutton2()
 function timereset()
 {    
   try {
-    var remtime = "10:00";
+    var remtime = "15:00";
     
    //alert(remtime); 
       

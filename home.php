@@ -586,7 +586,7 @@ box-shadow: rgba(255,255,255, 0.75) 1.5em 0 0 0, rgba(255,255,255, 0.75) 1.1em 1
                               rankcmbset($myrank);
                             }               
                             ?>  
-                                  </select>
+                          </select>
                     </div>
                 </div>
       </div>
@@ -689,7 +689,7 @@ box-shadow: rgba(255,255,255, 0.75) 1.5em 0 0 0, rgba(255,255,255, 0.75) 1.1em 1
         <div class="row">
              <div class="col-md-12">
                     <div class="form-group"> 
-                              <label for="address" class="form-label">Present Address</label>
+                              <label for="address" class="form-label">Permanent Address</label>
                               <input type="text" name="address" id="address" class="form-control" placeholder="" value="<?php echo $rows['address']; ?>">
                     </div>
               </div>
@@ -698,7 +698,7 @@ box-shadow: rgba(255,255,255, 0.75) 1.5em 0 0 0, rgba(255,255,255, 0.75) 1.1em 1
         <div class="row">
             <div class="col-md-12">
                 <div class="form-group"> 
-                          <label for="currentaddress" class="form-label">Current Address</label>
+                          <label for="currentaddress" class="form-label">Present Address</label>
                           <input type="text" name="currentaddress" id="currentaddress" class="form-control" placeholder="" value="<?php echo $rows['currentaddress']; ?>">
                 </div>
             </div>
