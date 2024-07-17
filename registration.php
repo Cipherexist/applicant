@@ -319,6 +319,7 @@ function finalsave()
 	var thecadet = $("#cadet").val(); 
 	var theonboardexperience = $("#experience").val(); 
 	var thepreviouscompany = $("#previouscompany").val(); 
+	var theavailability = $("#availability").val();
 	//var theresumeupload = $("#resumeupload").val() 
 	//var theresumeupload = $('#resumeupload').prop('files')[0]; 
  if(agreedcheck)
@@ -339,7 +340,8 @@ function finalsave()
 			myrelation: therelation, 
 			mycadet: thecadet, 
 			myonboardexperience: theonboardexperience, 
-			mypreviouscompany: thepreviouscompany
+			mypreviouscompany: thepreviouscompany, 
+			myavailability: theavailability
 		},function(result)
 		{
 			if(result==1)
@@ -538,6 +540,12 @@ function finalsave()
 													</div>
 
 
+											</div>
+
+											<div class="form-group">
+											  <label for="availability">Availability</label>
+											  <input type="text"
+												class="form-control"  id="availability" aria-describedby="helpId" placeholder="Ex. Anytime">
 											</div>
 							</div>
 			            </section>

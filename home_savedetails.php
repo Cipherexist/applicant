@@ -29,6 +29,7 @@ include "loadprogress.php";
 @$weight = $_POST['myweight']; 
 @$myusername = $_COOKIE['usname']; 
 @$facebookaccount = $_POST['myfacebookaccount'];
+@$availability = $_POST['mydateavailability'];
 
 /* 
 firstname
@@ -56,7 +57,7 @@ $sql = "UPDATE `applicantinfo` SET `firstname`='$firstname',`middlename`='$middl
 "`birthdate`='$birthdate',`birthplace`='$placeofbirth',`age`='$age',`nationality`='$nationality',". 
 "`citizenship`='$citizenship',`religion`='$religion',`address`='$address',`currentaddress`='$currentaddress',`gender`='$gender',`haircolor`='$haircolor',`eyecolor`='$eyecolor',". 
 "`sss`='$sss',`philhealth`='$philhealth',`tin`='$tin',`pagibig`='$pagibig',`contactnumber`='$mobilenumber',`currentrank`='$rank',`email`='$emailadd',`applyingrank`='$rankapplied',".
-"`height`='$height',`weight`='$weight',`facebookaccount`='$facebookaccount'". 
+"`height`='$height',`weight`='$weight',`facebookaccount`='$facebookaccount'". ",`dateavailability`='$availability'". 
 "Where username Like '$myusername'"; 
 
 mysqli_query($sqlcon,$sql); 

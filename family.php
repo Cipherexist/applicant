@@ -52,15 +52,19 @@
   <script>
         $(document).ready(function() 
           {
-                 
-            var table = $('.mydatatable').DataTable();
+            $("#ajaxsave").hide();
 
+            var table = $('.mydatatable').DataTable();
+           // document.getElementById("btn_submit").disabled = false 
+        
           
         });
 
 
         function savedetails()
         {
+          document.getElementById("btn_submit").disabled = true 
+          $("#ajaxsave").show()
 
           $.post("family_savedetails.php",
           {
@@ -81,6 +85,8 @@
             mypersonaddress: $("#personaddress").val(),
           },function(result)
           {
+            document.getElementById("btn_submit").disabled = false 
+            $("#ajaxsave").hide()
             const date = new Date();
 
               let day = date.getDate();
@@ -478,7 +484,7 @@
                 }
         ?>
         <div class="form-group">
-              <button type="button" class="btn btn-success" onclick="savedetails()">Save</button>
+              <button type="button" id='btn_submit' class="btn btn-success" onclick="savedetails()">Save</button><img src='images/ajax-loader.gif' class='ml-2' id='ajaxsave'/>
             </div>
 
             <div class="form-group">

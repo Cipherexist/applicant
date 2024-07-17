@@ -54,6 +54,7 @@
             $("#loading").hide();
             $("#ajaxloadingforpic").hide();
             $("#ajaxloading2").hide();
+            $("#ajaxsave").hide()
            // var table = $('.mydatatable').DataTable();
 
 
@@ -127,6 +128,8 @@
 
         function savedetails()
         {
+            document.getElementById("btn_submit").disabled = true 
+            $("#ajaxsave").show()
              let philhealth = document.getElementById("philhealth")
              let sss = document.getElementById("sss")
              let tin = document.getElementById("tin")
@@ -227,9 +230,12 @@
                 myemailadd: $("#emailadd").val(),
                 myheight: $("#height").val(),
                 myweight: $("#weight").val(), 
-                myfacebookaccount: $("#facebookaccount").val()
+                myfacebookaccount: $("#facebookaccount").val(), 
+                mydateavailability: $("#availability").val()
               },function(result)
               {
+                document.getElementById("btn_submit").disabled = false 
+                $("#ajaxsave").hide()
                 const date = new Date();
 
                 let day = date.getDate();
@@ -589,7 +595,14 @@ box-shadow: rgba(255,255,255, 0.75) 1.5em 0 0 0, rgba(255,255,255, 0.75) 1.1em 1
                           </select>
                     </div>
                 </div>
+                <div class="col-md-4">
+                            <div class="form-group"> 
+                                    <label for="availability" class="form-label">Availability</label>
+                                    <input type="text" name="availability" id="availability" class="form-control" placeholder="Ex. Anytime" value="<?php echo $rows['dateavailability']; ?>">
+                            </div>
+                </div>
       </div>
+
         <div class="row">
                 <div class="col-md-2" > 
                     <div class="form-group"> 
@@ -856,7 +869,7 @@ box-shadow: rgba(255,255,255, 0.75) 1.5em 0 0 0, rgba(255,255,255, 0.75) 1.1em 1
                 }
         ?>
         <div class="form-group">
-              <button type="button" class="btn btn-success" onclick="savedetails()">Save</button>
+              <button type="button" class="btn btn-success" id="btn_submit" onclick="savedetails()">Save</button> <img src='images/ajax-loader.gif' class='ml-2' id='ajaxsave'/>
             </div>
 
             <div class="form-group">

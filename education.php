@@ -52,7 +52,7 @@
         $(document).ready(function() 
           {
                  
-
+            $("#ajaxsave").hide()
             $('#yearstarted').daterangepicker({
                 "singleDatePicker": true,
                 "showDropdowns": true,
@@ -76,7 +76,8 @@
 
         function savedetails()
         {
-
+          document.getElementById("btn_submit").disabled = true 
+          $("#ajaxsave").show()
           $.post("education_savedetails.php",
           {
             myhighesteducation: $("#highesteducation").val(), 
@@ -86,6 +87,8 @@
             myyearcompleted: $("#yearcompleted").val()
           },function(result)
           {
+            document.getElementById("btn_submit").disabled = false 
+            $("#ajaxsave").hide()
             const date = new Date();
 
               let day = date.getDate();
@@ -459,7 +462,7 @@
                 }
         ?>
         <div class="form-group">
-              <button type="button" class="btn btn-success" onclick="savedetails()">Save</button>
+              <button type="button" id="btn_submit" class="btn btn-success" onclick="savedetails()">Save</button><img src='images/ajax-loader.gif' class='ml-2' id='ajaxsave'/>
             </div>
 
             <div class="form-group">
