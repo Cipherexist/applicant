@@ -543,9 +543,9 @@ function finalsave()
 											</div>
 
 											<div class="form-group">
-											  <label for="availability">Availability</label>
+											  <label for="availability">Date Availability</label>
 											  <input type="text"
-												class="form-control"  id="availability" aria-describedby="helpId" placeholder="Ex. Anytime">
+												class="form-control"  id="availability" aria-describedby="helpId" placeholder="Ex. Anytime, next june, this july">
 											</div>
 							</div>
 			            </section>

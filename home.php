@@ -597,8 +597,8 @@ box-shadow: rgba(255,255,255, 0.75) 1.5em 0 0 0, rgba(255,255,255, 0.75) 1.1em 1
                 </div>
                 <div class="col-md-4">
                             <div class="form-group"> 
-                                    <label for="availability" class="form-label">Availability</label>
-                                    <input type="text" name="availability" id="availability" class="form-control" placeholder="Ex. Anytime" value="<?php echo $rows['dateavailability']; ?>">
+                                    <label for="availability" class="form-label">Date Availability</label>
+                                    <input type="text" name="availability" id="availability" class="form-control" placeholder="Ex. Anytime, this month, next june, this july" value="<?php echo $rows['dateavailability']; ?>">
                             </div>
                 </div>
       </div>
